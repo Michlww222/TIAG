@@ -5,6 +5,8 @@ Created on Sat Nov 14 2020
 @author: PaweŁ Świder
 """
 
+print("Janusz")
+
 
 from graphviz import Graph
 
@@ -32,7 +34,7 @@ class Graph_Transformation(Graph):
             if ' -- ' not in elem:
                 if get_label(elem) == label:
                     return elem
-                return None
+        return None
     
     def find_edges_to_node(self, name):
         """Znajduje listę krawędzi powiędzy wierzchołkami
@@ -71,6 +73,24 @@ class Graph_Transformation(Graph):
         
         return G2
     
+    def find_labels(self,nodes_names):
+        """Znajduje wartosci label dla podanych nazw nodów
+        nodes_names - lista nazw wierzchołków
+        return - lista imion dla poszczególnych nodóW
+        """
+        nodes, _ = self.find_nodes_and_edges()
+        labels = [None]*len(nodes_names)
+        print("Nody: ", nodes)
+        print("Names: ", nodes_names)
+        for node in nodes:
+            try:
+                node_position = nodes_names.index(get_name(node))
+                labels[node_position] = get_label(node)
+                print("Wierzchołek: ", get_label(node))
+            except:
+                print("Nie znaleziono")
+        return labels
+    
     def find_nodes_and_edges(self):
         """Zwraca listę wierzchołków i listę krawędzi
         return - (nodes, edges)
@@ -91,7 +111,8 @@ class Production():
         """
         L - graf lewej strony produkcji
         R - graf prawej strony produkcji
-        T - transformacja osadzenia
+        T - transformacja osadzenia będąca słownikiem
+        T[label_in_old_graph] = label_in_new_graph
         """
         self.L = L
         self.R = R
@@ -144,11 +165,28 @@ class Production():
         for element in R2.body:
             G2.body.append(element)
         
-        G2.view()
-        #dodaj graf prawej strony produkcji
+        nodes_in_edges_to_L = []
+        for edge in edges_to_L:
+            nodes_in_edges_to_L.append(get_names_from_edge(edge))
         
-        #przeprowadź transformację osadzenia
+        embed_nodes_names = []
+        for first, second in nodes_in_edges_to_L:
+            if first == name_of_L_node:
+                embed_nodes_names.append(second)
+            else:
+                embed_nodes_names.append(first)
         
+        labels_of_embed_nodes = G.find_labels(embed_nodes_names)
+        print("Wierzchołki do zaopiekowania się: ",labels_of_embed_nodes)
+        labels_of_ends_of_embeded_nodes = [self.T[label] for label in labels_of_embed_nodes]
+        print("Końcowe labele: ", labels_of_ends_of_embeded_nodes)
+        
+        R2_nodes_to_embed_edges = []
+        for label in labels_of_ends_of_embeded_nodes:
+            R2_nodes_to_embed_edges.append(get_name(R2.find_node_with_label(label)))
+        
+        for i in range(len(R2_nodes_to_embed_edges)):
+            G2.edge(R2_nodes_to_embed_edges[i], embed_nodes_names[i])
         return G2
 
 def node_or_edge(element):
@@ -181,8 +219,8 @@ def find_unique_names(names, n):
     n - ilosć nazw do znalezienia
     return - tablica string nazwierająca odpowiednia nazwy
     """
-    i = 0;
-    j = 0;
+    i = 0
+    j = 0
     new_names = []
     while (len(new_names)<n):
         if j < len(names):
