@@ -24,6 +24,6 @@ prod_1_left.node('1', label='Y')
 transformation_1 = {'a':'Y','b':'c','c':'Y','d':'a','X':'c','Y':'Y',}
 production_1 = Graph.Production(prod_1_left,prod_1_right, transformation_1)
 
-G2 = production_1.produce(prod_1_right, "wynik")
-
+G1 = production_1.produce(prod_1_right, "wynik")
+G2 = production_1.produce(G1, "wynik")
 G2.view()

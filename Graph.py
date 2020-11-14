@@ -5,9 +5,6 @@ Created on Sat Nov 14 2020
 @author: PaweŁ Świder
 """
 
-print("Janusz")
-
-
 from graphviz import Graph
 
 class Graph_Transformation(Graph):
