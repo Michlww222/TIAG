@@ -39,9 +39,11 @@ class Graph_Transformation(Graph):
         raturn - lista krawędzi z wierzchołkiem name
         """
         list_of_edges = []
+        print("Nazwa L:",name)
         for elem in self.body:
-            if node_or_edge(elem) == False and name in elem:
-                list_of_edges.append(elem)
+            if node_or_edge(elem) == False:
+                if name in get_names_from_edge(elem):
+                    list_of_edges.append(elem)
         return list_of_edges
     
     def translate_graph(self, translator, graph_name):
@@ -59,7 +61,6 @@ class Graph_Transformation(Graph):
             label = get_label(node)
             name = get_name(node)
             new_name = translator[name]
-            print(new_name, label)
             G2.node(new_name, label=label)
             
         for edge in edges:
@@ -77,15 +78,18 @@ class Graph_Transformation(Graph):
         """
         nodes, _ = self.find_nodes_and_edges()
         labels = [None]*len(nodes_names)
-        print("Nody: ", nodes)
-        print("Names: ", nodes_names)
         for node in nodes:
             try:
                 node_position = nodes_names.index(get_name(node))
                 labels[node_position] = get_label(node)
-                print("Wierzchołek: ", get_label(node))
             except:
-                print("Nie znaleziono")
+                None
+        
+        if None in labels:
+            print(nodes_names)
+            print(labels)
+            raise ValueError("W tabeli label jest None")
+
         return labels
     
     def find_nodes_and_edges(self):
@@ -121,69 +125,60 @@ class Production():
         name_G2 - nazwa nowego grafu
         return - obiekt G2 będący wynikiem przeprowadzenia produkcji na G
         """
-        
+        #dane wierzchołka L
         L_node = self.L.body[0]
-        label = get_label(L_node)
+        L_label = get_label(L_node)
+        #dane wierzchołka w L grafie G 
+        L_node_in_G = G.find_node_with_label(L_label)
+        L_node_in_G_name = get_name(L_node_in_G)
         
-        L_node_in_G = G.find_node_with_label(label)
+        #krawędzie pomiędzy G i podgrafem L
+        G_edges_to_L = G.find_edges_to_node(L_node_in_G_name)
+        G_nodes_names_in_edges_to_L = [get_names_from_edge(edge) for edge in G_edges_to_L]
+        G_nodes_to_L_names = []
+        print(G_nodes_names_in_edges_to_L)
+        for first, second in G_nodes_names_in_edges_to_L:
+            if first == L_node_in_G_name:
+                G_nodes_to_L_names.append(second)
+            else:
+                G_nodes_to_L_names.append(first)
         
-        name_of_L_node = get_name(L_node_in_G)
-        #znajdź graf lewej strony produkcji
-        #znajdź wierzchołki pomiędzy podgrafem L a G-L
-        edges_to_L = G.find_edges_to_node(name_of_L_node)
-        
-        #utwórz nowy graf G2
+        #stworzenie nowego grafu, wstawienie do niego częsci nienależacych do L
+        #napisanie nazw w grafie G2
         G2 = Graph_Transformation(name_G2)
         
-        #wstaw wierzchołki i krawędzie niebędące w poprzednich punktach
         names = []
         for element in G.body:
-            if element not in edges_to_L and element != L_node_in_G:
+            if element not in G_edges_to_L and element != L_node_in_G:
                 G2.body.append(element)
                 if node_or_edge(element) == True:
                     try:
                         names.append(int(get_name(element)))
                     except:
                         print("Błednie odczytanie nazwy")
-                        
         names.sort()
-        print(names)
-        R_nodes, R_edges = self.R.find_nodes_and_edges()
         
+        R_nodes, _ = self.R.find_nodes_and_edges()
+        #znajdujemy nowe nazwy dla grafu R 
         R_new_names = find_unique_names(names,len(R_nodes))
         R_old_names = [get_name(element) for element in R_nodes]
-        
+        #tworzymy translator
         translator = {old: new for old, new in zip(R_old_names,R_new_names)}
         
-        print(translator)
+        #sprawiamy żeby graf R nie kolidował z grafem G2 i wstawiamy R2 w G2
         R2 = self.R.translate_graph(translator, "R2")
+        G2.body.extend(R2.body)
         
+        #znalezienie label dla krawędzi "zwisających"
+        G_nodes_to_L_labels = G.find_labels(G_nodes_to_L_names)
+        R2_nodes_to_G_labels = [self.T[label] for label in G_nodes_to_L_labels]
         
-        for element in R2.body:
-            G2.body.append(element)
+        #znalezienie koncowych krawedzi transformacji osadzenia
+        R2_nodes_names_to_G_nodes = [get_name(R2.find_node_with_label(label)) for label in R2_nodes_to_G_labels]
         
-        nodes_in_edges_to_L = []
-        for edge in edges_to_L:
-            nodes_in_edges_to_L.append(get_names_from_edge(edge))
-        
-        embed_nodes_names = []
-        for first, second in nodes_in_edges_to_L:
-            if first == name_of_L_node:
-                embed_nodes_names.append(second)
-            else:
-                embed_nodes_names.append(first)
-        
-        labels_of_embed_nodes = G.find_labels(embed_nodes_names)
-        print("Wierzchołki do zaopiekowania się: ",labels_of_embed_nodes)
-        labels_of_ends_of_embeded_nodes = [self.T[label] for label in labels_of_embed_nodes]
-        print("Końcowe labele: ", labels_of_ends_of_embeded_nodes)
-        
-        R2_nodes_to_embed_edges = []
-        for label in labels_of_ends_of_embeded_nodes:
-            R2_nodes_to_embed_edges.append(get_name(R2.find_node_with_label(label)))
-        
-        for i in range(len(R2_nodes_to_embed_edges)):
-            G2.edge(R2_nodes_to_embed_edges[i], embed_nodes_names[i])
+        for i in range(len(R2_nodes_names_to_G_nodes)):
+            G2.edge(R2_nodes_names_to_G_nodes[i], G_nodes_to_L_names[i])
+            
         return G2
 
 def node_or_edge(element):
@@ -233,6 +228,10 @@ def find_unique_names(names, n):
     return new_names
     
 def get_names_from_edge(edge):
+    """Zwraca nazwy wierzchołków dla danej krawędzi
+    edge - krawędź
+    return - (a,b), gdzie a,b to nazwy wierzchołków połączonych krawędzią edge
+    """
     first_end = edge.find(' -- ')
     first_start = 1
     first = edge[first_start:first_end]
