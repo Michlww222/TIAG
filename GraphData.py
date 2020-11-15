@@ -4,11 +4,34 @@
 
 
 class GraphData:
-    
-    def __init__(self,V,E):
-        self.E = E
-        self.V = V
-
+   
+    def __init__(self,V,E): #Done
+        supportlist=[]
+        for i in range(len(V)):
+            supportvar=1
+            return1 = ''
+            return2 = ''
+            while(V[i][supportvar].isdigit()):
+                return1 = return1 + V[i][supportvar]
+                supportvar += 1
+            return2 = V[i][len(V[i])-2]
+            supportlist.append([return1,return2])
+        self.V = supportlist
+        supportlist=[]
+        for i in range(len(E)):
+            supportvar = 1
+            return1 = ''
+            return2 = ''
+            while(E[i][supportvar].isdigit()):
+                return1 = return1 + V[i][supportvar]
+                supportvar += 3
+            supportvar += 2
+            while(supportvar < len(E[i]) and E[i][supportvar].isdigit()):
+                return2 = return2 + E[i][supportvar]
+                supportvar += 1
+            supportlist.append([return1,return2])
+        self.E = supportlist
+        
     def number_of_nodes(self): #Done
         #długość listy wierzchołków
         return len(self.V)
@@ -22,14 +45,14 @@ class GraphData:
             while len(supportQue) != 0:
                 node = supportQue.pop(0)
                 for i in range(len(E)):
-                    if(node[1] == E[i][1]):
+                    if(node[0] == E[i][0]):
                         for j in range(len(V)):
-                            if E[i][6] == V[j][1] and visited[j] != True:
+                            if E[i][1] == V[j][0] and visited[j] != True:
                                 visited[j] =  True
                                 supportQue.append(V[j])
-                    elif(node[1] == E[i][6]):
+                    elif(node[0] == E[i][1]):
                         for j in range(len(V)):
-                            if E[i][1] == V[j][1] and visited[j] != True:
+                            if E[i][0] == V[j][0] and visited[j] != True:
                                 visited[j] =  True
                                 supportQue.append(V[j])
         E = self.E 
@@ -58,13 +81,13 @@ class GraphData:
         returnvar = 0
         #szukam wszystkich etykiet wierzcholkow a b c d
         for i in range(len(V)):
-            if V[i][10] == 'a' or V[i][10] == 'b' or V[i][10] == 'c' or V[i][10] == 'd' :
-                supportlist.append(V[i][1])
+            if V[i][1] == 'a' or V[i][1] == 'b' or V[i][1] == 'c' or V[i][1] == 'd' :
+                supportlist.append(V[i][0])
         
         #szukam wszystkich etykiet wierzcholkow polaczonych ze soba 
         for i in range(len(E)):
+            supportlist2.append(E[i][0])
             supportlist2.append(E[i][1])
-            supportlist2.append(E[i][6])
 
         #zliczam wszystkie krawędzie połaczone z wierzcholkiem a,b c lub d
         for i in range(len(supportlist)):
@@ -86,7 +109,7 @@ class GraphData:
                 '\naverage of "a,b,c,d" nodes degree: ' + str(data[4]) + '\naverage of nodes in components: ' + str(data[5]))
     
 
-V = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t4 [label=a]']
+V = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
 E = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
 print(GraphData(V,E).data_print())
 
