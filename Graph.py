@@ -171,8 +171,16 @@ class Production():
         
         #znalezienie label dla krawędzi "zwisających"
         G_nodes_to_L_labels = G.find_labels(G_nodes_to_L_names)
-        R2_nodes_to_G_labels = [self.T[label] for label in G_nodes_to_L_labels]
         
+        i = 0
+        while i < len(G_nodes_to_L_labels):
+            if self.T[G_nodes_to_L_labels[i]] == None:
+                G_nodes_to_L_labels.pop(i)
+                G_nodes_to_L_names.pop(i)
+                i = i-1
+            i = i+1
+        
+        R2_nodes_to_G_labels = [self.T[label] for label in G_nodes_to_L_labels]
         #znalezienie koncowych krawedzi transformacji osadzenia
         R2_nodes_names_to_G_nodes = [get_name(R2.find_node_with_label(label)) for label in R2_nodes_to_G_labels]
         

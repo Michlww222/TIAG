@@ -16,10 +16,12 @@ prod_1_right.edge('1', '3')
 prod_1_right.edge('3', '2')
 
 
+
+
 prod_1_left = Graph.Graph_Transformation('prod_1_left')
 
 prod_1_left.node('1', label='Y')
-transformation_1 = {'a':'Y','b':'c','c':'Y','d':'a','X':'c','Y':'Y',}
+transformation_1 = {'a': None,'b':'c','c':'Y','d':'a','X':'c','Y':'Y',}
 production_1 = Graph.Production(prod_1_left,prod_1_right, transformation_1)
 
 G1 = production_1.produce(prod_1_right, "wynik")
