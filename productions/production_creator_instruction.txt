@@ -1,0 +1,31 @@
+###############################################################################
+
+Hello in the Production Creator!
+
+To start creating a new production, enter
+"new_production name"
+where name is the name of the new production.
+
+To add a node to the right site production graph, enter
+"right node name label"
+where name is the name of the node and label is its label.
+
+To add a edge to the right site production graph, enter
+"right edge tail_name head_name"
+where tail_name and head_name are names od nodes that are joined by the edge.
+
+To perform these operations on the left site production graph, enter
+"left" instead of the word "right"
+
+To add an edge to the embed transformation, enter
+embed_transformation tail_label head_label
+where tail_label and head_label are names od nodes that are joined by the edge.
+
+To finish creating your production, enter
+"end"
+
+You cannot create two productions at the same time
+To end the program, enter
+"exit"
+
+###############################################################################
