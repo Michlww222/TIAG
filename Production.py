@@ -5,9 +5,8 @@ Created on Tue Nov 17 13:51:14 2020
 @author: spawe
 """
 
-from Graph import Graph_Transformation
+from Graph import Graph_Transformation, find_unique_names
 from Graph import get_name, get_label, get_names_from_edge
-from Graph import node_or_edge, find_unique_names
 
 class Production():
     """Klasa opisująca produkcje"""
