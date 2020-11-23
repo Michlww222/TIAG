@@ -26,12 +26,26 @@ class Graph_Transformation(Graph):
         """Znajduje wierzchołek z o określonym parametrze label
         label - nazwa parametru label wierzchołka
         return - string zawierający informacje o wierzchołku
+        DO USUNIĘCIA
         """
         for elem in self.body:
             if ' -- ' not in elem:
                 if get_label(elem) == label:
                     return elem
         return None
+    
+    def find_nodes_with_label(self,label):
+        """Znajduje wierzchołki z o określonym parametrze label
+        label - nazwa parametru label wierzchołka
+        return - lista wierzchołków o podanym paramentze label
+        """
+        nodes = []
+        for elem in self.body:
+            if ' -- ' not in elem:
+                if get_label(elem) == label:
+                    nodes.append(elem)
+        print(nodes)
+        return nodes
     
     def find_edges_to_node(self, name):
         """Znajduje listę krawędzi powiędzy wierzchołkami
