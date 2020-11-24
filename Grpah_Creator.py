@@ -11,7 +11,7 @@ class Graph_Creator():
 
     @staticmethod
     def hello_graph_creator():
-        hello = open("grafy_startowe\graph_creator_instruction.txt", "r")
+        hello = open("grafy_startowe\graph_creator_instructions.txt", "r")
         print(hello.read())
 
     def init_parse(self):
@@ -30,17 +30,16 @@ class Graph_Creator():
 
     def create_parse(self):
         caution = "Illegal phrase here, try \n node/edge <arg1> <arg2>\nor\nend"
-        result = []
         while True:
             command = input()
             l = command.split()
             if l[0] == "end":
-                return result
+                return []
             if len(l) == 3:
                 if l[0] == "node":
-                    result = [True, l[1], l[2]]
-                elif l[1] == "edge":
-                    result = [False, l[1], l[2]]
+                    return [True, l[1], l[2]]
+                elif l[0] == "edge":
+                    return [False, l[1], l[2]]
                 else:
                     print(caution)
             else:
@@ -54,7 +53,6 @@ class Graph_Creator():
             else:
                 self.graph.edge(operation[1], operation[2])
             operation = self.create_parse()
-
         self.graph.render(filename="grafy_startowe\\" + self.name + ".dot")
 # end def
 
