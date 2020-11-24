@@ -1,11 +1,12 @@
 """
 @author: Michał Wąsik
 """
-
+from Graph import Graph_Transformation
 
 class GraphData:
    
-    def __init__(self,V,E): #Done
+    def __init__(self,G): #Done
+        V, E = G.find_nodes_and_edges()
         supportlist=[]
         for i in range(len(V)):
             supportvar=1
@@ -109,7 +110,12 @@ class GraphData:
                 '\naverage of "a,b,c,d" nodes degree: ' + str(data[4]) + '\naverage of nodes in components: ' + str(data[5]))
     
 
-V = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
-E = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
-print(GraphData(V,E).data_print())
+V_1 = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
+E_1 = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
+G_Janusz = Graph_Transformation('janusz')
+G_Janusz.body.extend(V_1)
+G_Janusz.body.extend(E_1)
+print(G_Janusz.body)
+graphdata = GraphData(G_Janusz)
+print(graphdata.data_print())
 

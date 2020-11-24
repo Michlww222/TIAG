@@ -5,7 +5,8 @@ Created on Tue Nov 17 13:51:14 2020
 @author: spawe
 """
 
-from Graph import *
+from Graph import Graph_Transformation, find_unique_names
+from Graph import get_name, get_label, get_names_from_edge
 
 class Production():
     """Klasa opisująca produkcje"""
@@ -31,33 +32,31 @@ class Production():
         L_node = self.L.body[0]
         L_label = get_label(L_node)
         #dane wierzchołka w L grafie G 
-        L_node_in_G = G.find_node_with_label(L_label)
+        L_node_in_G = G.find_nodes_with_label(L_label)[0]
         L_node_in_G_name = get_name(L_node_in_G)
         
         #krawędzie pomiędzy G i podgrafem L
-        G_edges_to_L = G.find_edges_to_node(L_node_in_G_name)
-        G_nodes_names_in_edges_to_L = [get_names_from_edge(edge) for edge in G_edges_to_L]
-        G_nodes_to_L_names = []
-        for first, second in G_nodes_names_in_edges_to_L:
+        L_border_edges = G.find_edges_to_node(L_node_in_G_name)
+        G_border_edges_names = [get_names_from_edge(edge) for edge in L_border_edges]
+        G_border_nodes_names = []
+        for first, second in G_border_edges_names:
             if first == L_node_in_G_name:
-                G_nodes_to_L_names.append(second)
+                G_border_nodes_names.append(second)
             else:
-                G_nodes_to_L_names.append(first)
-        
+                G_border_nodes_names.append(first)
         #stworzenie nowego grafu, wstawienie do niego częsci nienależacych do L
         #napisanie nazw w grafie G2
         G2 = Graph_Transformation(name_G2)
         
-        names = []
-        for element in G.body:
-            if element not in G_edges_to_L and element != L_node_in_G:
-                G2.body.append(element)
-                if node_or_edge(element) == True:
-                    try:
-                        names.append(int(get_name(element)))
-                    except:
-                        print("Błednie odczytanie nazwy")
+        G_nodes, G_edges = G.find_nodes_and_edges()
+        G_nodes.remove(L_node_in_G)
+        G_edges = [edge for edge in G_edges if edge not in L_border_edges]
+        names = [int(get_name(node)) for node in G_nodes]
         names.sort()
+        print(names)
+        
+        G2.body.extend(G_nodes)
+        G2.body.extend(G_edges)
         
         R_nodes, _ = self.R.find_nodes_and_edges()
         #znajdujemy nowe nazwy dla grafu R 
@@ -72,26 +71,31 @@ class Production():
         
         #znalezienie label dla krawędzi "zwisających"
         # author Piotr Biały
+        #G2.body.extend(find_border_edges())
+        border_nodes_labels = G.find_labels(G_border_nodes_names)
+        print(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
 
-        G_nodes_to_L_labels = G.find_labels(G_nodes_to_L_names)
-        G_nodes_to_L_names = [G_nodes_to_L_names[i] for i,label in enumerate(G_nodes_to_L_labels) if self.T[label] is not None]
-        G_nodes_to_L_labels = [label for label in G_nodes_to_L_labels if self.T[label] is not None]
-        R2_nodes_to_G_labels = [self.T[label] for label in G_nodes_to_L_labels]
-        '''
-        i = 0
-        while i < len(G_nodes_to_L_labels):
-            if self.T[G_nodes_to_L_labels[i]] == None:
-                G_nodes_to_L_labels.pop(i)
-                G_nodes_to_L_names.pop(i)
-                i = i-1
-            i = i+1
-
-        R2_nodes_to_G_labels = [self.T[label] for label in G_nodes_to_L_labels]
-        '''
-        #znalezienie koncowych krawedzi transformacji osadzenia
-        R2_nodes_names_to_G_nodes = [get_name(R2.find_node_with_label(label)) for label in R2_nodes_to_G_labels]
-        
-        for i in range(len(R2_nodes_names_to_G_nodes)):
-            G2.edge(R2_nodes_names_to_G_nodes[i], G_nodes_to_L_names[i])
-            
+        G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
         return G2
+    
+    def find_border_edges(self, border_nodes_names,border_nodes_labels, R):
+        """
+        Zwraca listę zawierającą krawędzie powstałe w transformacji osadzenia
+        border_nodes_noames - nazwy wierzchołków z "zwisającymi" krawędziami
+        border_nodes_labels - label wierzchołków z "zwisającymi" krawędziami
+        R - graf izomorficzny do prawej strony produckji za pomocą
+        translate graph
+        return - lista krawędzi powstałych w transformacji osadzenia
+        """
+        result = []
+        T2 = {}
+        for key in self.T.keys():
+            T2[key] = R.find_nodes_with_label(self.T[key])
+        
+        for name, label in zip (border_nodes_names,border_nodes_labels):
+            for node in T2[label]:
+                result.append("\t" + name + " -- " + get_name(node))
+        return result
+        
+        
+        
