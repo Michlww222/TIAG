@@ -1,5 +1,3 @@
-    
-=======
 # -*- coding: utf-8 -*-
 """
 Created on Tue Nov 17 13:51:14 2020
@@ -75,6 +73,7 @@ class Production():
         # author Piotr Biały
         #G2.body.extend(find_border_edges())
         border_nodes_labels = G.find_labels(G_border_nodes_names)
+        print(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
 
         G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
         return G2
@@ -97,3 +96,6 @@ class Production():
             for node in T2[label]:
                 result.append("\t" + name + " -- " + get_name(node))
         return result
+        
+        
+        
