@@ -25,7 +25,7 @@ class Production_Creator():
                     print("You forget about name of your new production")
             elif l[0] == 'exit':
                 self.program_finished = True
-                return None
+                return "_"
             else:
                 print("Illegal phrase here, try \nnew production <name> \nor\nexit")
 
@@ -96,8 +96,8 @@ class Production_Creator():
         embed_t = open("productions\EmbedT_" + self.name + ".txt", "w+")
         with embed_t:
             for item in self.transformation:
-                embed_t.write("%s\n" % item[0])
-                embed_t.write("%s\n" % item[1])
+                embed_t.write(item[0] + " ")
+                embed_t.write(item[1] + " ")
         embed_t.close()
 # end def
 

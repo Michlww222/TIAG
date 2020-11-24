@@ -1,0 +1,8 @@
+graph Rightp1 {
+	1 [label=Y]
+	2 [label=c]
+	3 [label=a]
+	2 -- 1
+	1 -- 3
+	3 -- 2
+}
