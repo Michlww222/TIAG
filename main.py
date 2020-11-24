@@ -44,7 +44,7 @@ def parse_args():
     production_names = args[2:,]
 
     production_paths = [["productions\Left_" + name + ".dot",
-                         "productions\Right_" + name + ".dot"
+                         "productions\Right_" + name + ".dot",
                          "productions\EmbedT_" + name + ".txt"]
                         for name in range(len(production_names))]
     return name, path, production_paths
