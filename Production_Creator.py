@@ -32,8 +32,8 @@ class Production_Creator():
     def __init__(self):
         self.program_finished = False
         self.name = self.init_parse()
-        self.left_production_graph = Graph()
-        self.right_production_graph = Graph()
+        self.left_production_graph = Graph(name="Left" + self.name)
+        self.right_production_graph = Graph(name="Right" + self.name)
         self.transformation = []
 
     def create_parse(self):
@@ -96,7 +96,8 @@ class Production_Creator():
         embed_t = open("productions\EmbedT_" + self.name + ".txt", "w+")
         with embed_t:
             for item in self.transformation:
-                embed_t.write("%s\n" % item)
+                embed_t.write("%s\n" % item[0])
+                embed_t.write("%s\n" % item[1])
         embed_t.close()
 # end def
 
