@@ -13,8 +13,11 @@ def read_Graph(name,path):
         graph_g.edge(edge.get_source(), edge.get_destination())
 
     return graph_g
-  
+# end def
+
+
 def graph_to_graph_transformation(name,graph_g):
     graph_t = Graph_Transformation(name)
     graph_t.body = graph_g.body
     return graph_t
+# end def

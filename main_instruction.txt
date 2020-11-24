@@ -1,0 +1,17 @@
+###############################################################################
+
+Hello in the main graph production program!
+
+First enter the name of the new graph, for example
+"MyGraph"
+
+Then give the path to the input graph, for example
+"StartGraph.dot"
+
+At the end, give the production sequence to be performed on the graph.
+They must be the production names saved in / productions, for example
+"P1 P2 P3 P4"
+
+Enjoy the program!
+
+###############################################################################
