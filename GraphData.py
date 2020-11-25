@@ -112,10 +112,10 @@ class GraphData:
 
 V_1 = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
 E_1 = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
-G_Janusz = Graph_Transformation('janusz')
-G_Janusz.body.extend(V_1)
-G_Janusz.body.extend(E_1)
-print(G_Janusz.body)
-graphdata = GraphData(G_Janusz)
+G = Graph_Transformation('janusz')
+G.body.extend(V_1)
+G.body.extend(E_1)
+print(G.body)
+graphdata = GraphData(G)
 print(graphdata.data_print())
 
