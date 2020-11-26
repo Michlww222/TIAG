@@ -1,6 +1,0 @@
-graph test1 {
-	1 [label=Y]
-	2 [label=X]
-	3 [label=a]
-	1 -- 2
-}
