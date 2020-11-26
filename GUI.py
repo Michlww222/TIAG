@@ -7,24 +7,28 @@ Created on Wed Nov 25 20:26:21 2020
 
 import tkinter as tk
 from PIL import ImageTk, Image
+import tkinter.ttk
 
 class Window(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self,graph_photos, master=None, ):
+        """
+        graph_photos - tablica z plikami png zawierającymi grafy
+        """
         tk.Frame.__init__(self, master)
         self.master = master
         self.master.geometry("1280x720")
-        menu = tk.Menu(self.master)
-        fileMenu = tk.Menu(menu)
-        fileMenu.add_command(label="Item")
-        fileMenu.add_command(label="Exit", command=self.exitProgram)
-        menu.add_cascade(label="File", menu=fileMenu)
-        menu.add_command(label="Edit")
-        self.master.config(menu=menu)
+        self.graph_photos = graph_photos
+        
+        graph_frame = tk.Frame(self.master, height=400, width=400, bg="red")
+        graph_frame.place(x=0, y=0)
         
         text = tk.Label(self.master, text="Just do it")
-        text.place(x=100,y=100)
-        self.show_image_at_position("test.jpg", 400, 300, 200, 300)
-
+        text.place()
+        print(self.graph_photos)
+        self.show_image_at_position(self.graph_photos[0], 100, 100, 300, 300)
+        #self.show_image_at_position(self.graph_photos[1], 100, 100, 200, 200)
+        #self.show_image_at_position(self.graph_photos[2], 500, 100, 200, 200)
+        
     def exitProgram(self):
         self.master.destroy()
         
@@ -39,14 +43,16 @@ class Window(tk.Frame):
         """
         img = Image.open(path)
         img = img.resize((width, height))
-        img = ImageTk.PhotoImage(img)
-        panel = tk.Label(self.master, image = img)
-        panel.image = img
+        photo = ImageTk.PhotoImage(img)
+        panel = tk.Label(self.master, image = photo)
+        panel.image = photo
         panel.place(x=x,y=y)
         
 
 
+graph_photos = ["test1.png", "test2.png", "test3.png"]
+graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
-app = Window(root)
+app = Window(graph_photos, root )
 root.wm_title(" Transformacje i algorytmy grafowe")
 root.mainloop()

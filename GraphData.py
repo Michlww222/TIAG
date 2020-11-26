@@ -112,7 +112,7 @@ class GraphData:
 
 V_1 = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
 E_1 = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
-G = Graph_Transformation('janusz')
+G = Graph_Transformation('test1.png')
 G.body.extend(V_1)
 G.body.extend(E_1)
 print(G.body)
