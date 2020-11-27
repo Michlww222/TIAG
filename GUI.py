@@ -16,16 +16,58 @@ class Window(tk.Frame):
         """
         tk.Frame.__init__(self, master)
         self.master = master
-        self.master.geometry("1280x720")
+        self.master.geometry("1080x620")
         self.graph_photos = graph_photos
         
-        graph_frame = tk.Frame(self.master, height=400, width=400, bg="red")
-        graph_frame.place(x=0, y=0)
+        menu_frame = tk.Frame(self.master, bg="yellow")
+        menu_frame.pack(side="left")
         
-        text = tk.Label(self.master, text="Just do it")
-        text.place()
-        print(self.graph_photos)
-        self.show_image_at_position(self.graph_photos[0], 100, 100, 300, 300)
+        menu_graph_frame = tk.Frame(menu_frame, width = 200, bg="blue")
+        menu_graph_frame.pack(side="top")
+        
+        graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "blue")
+        graphs.pack()
+        
+        
+        graph_listbox_frame = tk.Frame(menu_graph_frame)
+        graph_listbox = tk.Listbox(graph_listbox_frame, bg="blue")
+        for i in range(100):
+            graph_listbox.insert(i, str(i))
+        graph_listbox.pack(side="left", fill="both")
+        
+        
+        
+        scrollbar = tk.Scrollbar(graph_listbox_frame)
+        scrollbar.pack(side="right", fill="y")
+        graph_listbox.config(yscrollcommand = scrollbar.set)
+        scrollbar.config(command = graph_listbox.yview)
+        graph_listbox_frame.pack(fill="both")
+        
+        graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Next")
+        graph_next.pack()
+        graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Previous")
+        graph_next.pack()
+        
+        productions_menu_frame = tk.Frame(menu_frame, bg= "red")
+        
+        productions = tk.Label(productions_menu_frame, text = "Productions", bg="blue")
+        productions.pack(fill = "y")
+        
+        productions_listbox = tk.Listbox(productions_menu_frame, bg="blue")
+        productions_listbox.insert(1, "First")
+        productions_listbox.insert(2, "Second")
+        productions_listbox.insert(3, "Third")
+        productions_listbox.insert(4, "Fourth")
+        productions_listbox.pack()
+        
+        productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Next")
+        productions_next.pack()
+        productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Previous")
+        productions_next.pack()
+        
+        productions_menu_frame.pack(side="bottom")
+        
+        self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
         #self.show_image_at_position(self.graph_photos[1], 100, 100, 200, 200)
         #self.show_image_at_position(self.graph_photos[2], 500, 100, 200, 200)
         
