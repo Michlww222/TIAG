@@ -1,0 +1,16 @@
+# name: P4
+# --- #
+graph P4Left {
+	1 [label=Y]
+}
+# --- #
+graph P4Right {
+	1 [label=c]
+}
+# --- #
+# embed_transformation a c 
+# embed_transformation b c 
+# embed_transformation c c 
+# embed_transformation d c 
+# embed_transformation X c 
+# embed_transformation Y c 

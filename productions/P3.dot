@@ -1,0 +1,18 @@
+# name: P3
+# --- #
+graph P3Left {
+	1 [label=Y]
+}
+# --- #
+graph P3Right {
+	1 [label=Y]
+	2 [label=X]
+	1 -- 2
+}
+# --- #
+# embed_transformation a X 
+# embed_transformation b Y 
+# embed_transformation c X 
+# embed_transformation d Y 
+# embed_transformation X X 
+# embed_transformation Y Y 

@@ -1,0 +1,9 @@
+graph Romek {
+	1 [label=Y]
+	2 [label=c]
+	3 [label=Y]
+	1 -- 2
+	2 -- 3
+	3 -- 2
+	1 -- 3
+}
