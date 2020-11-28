@@ -4,7 +4,6 @@ Created on Sat Nov 14 2020
 
 @author: Piotr Biały
 """
-
 from Production import Production
 from read_Graph import graph_to_graph_transformation, read_Graph
 import pydot
