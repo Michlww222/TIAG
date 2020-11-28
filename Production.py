@@ -2,7 +2,7 @@
 """
 Created on Tue Nov 17 13:51:14 2020
 
-@author: spawe
+@author: PaweŁ Świder
 """
 
 from Graph import Graph_Transformation, find_unique_names
