@@ -17,6 +17,7 @@ def hello_main():
 
 def get_name():
     name = input()
+    return name
 # end def
 
 
