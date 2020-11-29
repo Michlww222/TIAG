@@ -8,19 +8,30 @@ Created on Wed Nov 25 20:26:21 2020
 import tkinter as tk
 from PIL import ImageTk, Image
 import tkinter.ttk
+import os
 
 class Window(tk.Frame):
-    def __init__(self,graph_photos, master=None, ):
+    def __init__(self,master=None, production_dir = "productions",
+                 final_graph_dir = "results", starts_graph_dir = "grafy_startowe"):
         """
         graph_photos - tablica z plikami png zawierającymi grafy
+        production_dir - folder z produkcjami
+        final_graph_dir - folder z grafami wynikowymi
+        starts_graph_dir - floder z grafami startowymi
         """
         tk.Frame.__init__(self, master)
         self.master = master
         self.master.geometry("1080x620")
         self.graph_photos = graph_photos
         
+        
+        self.start_graph_paths = self.find_paths(starts_graph_dir)
+        print(self.start_graph_paths)
+        
         menu_frame = tk.Frame(self.master, bg="yellow")
         menu_frame.pack(side="left", fill = "y")
+        show_frame = tk.Frame(self.master, bg = "green");
+        show_frame.pack(fill = "both", expand = "yes")
         
         menu_graph_frame = tk.Frame(menu_frame, bg = "yellow")
         menu_graph_frame.pack(side="top")
@@ -28,21 +39,10 @@ class Window(tk.Frame):
         graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "yellow")
         graphs.pack()
         
-        graph_listbox_frame = tk.Frame(menu_graph_frame)
-        graph_listbox_frame.pack(fill="y")
+        self.pack_listbox(menu_graph_frame, [str(i) for i in range(50)])
         
-        graph_listbox = tk.Listbox(graph_listbox_frame, bg="blue")
-        for i in range(100):
-            graph_listbox.insert(i, str(i))
-        graph_listbox.pack(side="left", fill="both")
-        
-        graph_scrollbar = tk.Scrollbar(graph_listbox_frame)
-        graph_scrollbar.pack(side="right", fill="y")
-        
-        graph_listbox.config(yscrollcommand = graph_scrollbar.set)
-        graph_scrollbar.config(command = graph_listbox.yview)
-        
-        graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Next")
+        graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Next",
+                               command = lambda:self.next_graph(show_frame))
         graph_next.pack()
         graph_previous = tk.Button(menu_graph_frame, bg="blue", text = "Previous")
         graph_previous.pack()
@@ -53,21 +53,7 @@ class Window(tk.Frame):
         productions = tk.Label(productions_menu_frame, text = "Productions", bg="blue")
         productions.pack(fill = "y")
         
-        productions_listbox_frame = tk.Frame(productions_menu_frame)
-        productions_listbox_frame.pack()
-        
-        productions_listbox = tk.Listbox(productions_listbox_frame, bg="blue")
-        productions_listbox.insert(1, "First")
-        productions_listbox.insert(2, "Second")
-        productions_listbox.insert(3, "Third")
-        productions_listbox.insert(4, "Fourth")
-        productions_listbox.pack(side = "left")
-        
-        productions_scrollbar = tk.Scrollbar(productions_listbox_frame)
-        productions_scrollbar.pack(side = "right", fill = "y")
-        
-        productions_listbox.config(yscrollcommand = productions_scrollbar.set)
-        productions_scrollbar.config(command = productions_listbox.yview)
+        self.pack_listbox(productions_menu_frame, ["First", "Second", "Third", "Fourth", "Fifth"])
         
         productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Next")
         productions_next.pack()
@@ -79,9 +65,6 @@ class Window(tk.Frame):
         #self.show_image_at_position(self.graph_photos[2], 500, 100, 200, 200)
         
         #wizualizacja grafów i statystyki
-        show_frame = tk.Frame(self.master, bg = "green");
-        show_frame.pack(fill = "both", expand = "yes")
-        
         stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
         stats_frame.pack(side = "bottom")
         self.pack_graph_statistics(stats_frame, [1,1,1,1,1.25,1])
@@ -89,10 +72,47 @@ class Window(tk.Frame):
         #                                                "c": "Y","d": "a",
         #                                                "X": "c","Y": "Y",})
         
-        self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
+        self.pack_graph_image(show_frame, self.graph_photos[0])
+        #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
         
-    def exitProgram(self):
-        self.master.destroy()
+    def pack_graph_image(self, frame, path):
+        """
+        Wstawia obraz znajdujący się z danym pliku w podane miejsce
+        frame - Frame gdzie ma zostać umieszczony obraz
+        path - scieżka do obrazu
+        """
+        loaded_image = Image.open(path)
+        rendered_image = ImageTk.PhotoImage(loaded_image)
+        label_with_image = tk.Label(frame, image = rendered_image)
+        label_with_image.image = rendered_image
+        label_with_image.place(relx = 0.5, rely = 0.5, 
+                   anchor = 'center')
+        
+    def next_graph(self, frame):
+        next_label = tk.Label(frame, text= "Next button pressed")
+        next_label.pack(side= "right")
+        next_label.after(3000, next_label.destroy) # samoznikający napis
+        print("next pressed")
+        
+    def pack_listbox(self, frame, elements):
+        """
+        Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy
+        frame - Frame gdzie ma zostać umieszczony listbox
+        elements - tablica zawierająca jakie elementy mają zawierać się w listboxie
+        """
+        listbox_frame = tk.Frame(frame)
+        listbox_frame.pack()
+        
+        listbox = tk.Listbox(listbox_frame)
+        for i, element in enumerate(elements):
+            listbox.insert(i, element)
+        listbox.pack(side="left", fill="both")
+        
+        scrollbar = tk.Scrollbar(listbox_frame)
+        scrollbar.pack(side="right", fill="y")
+        
+        listbox.config(yscrollcommand = scrollbar.set)
+        scrollbar.config(command = listbox.yview)
         
     def show_image_at_position(self,path, x, y, width, height):
         """
@@ -146,11 +166,27 @@ class Window(tk.Frame):
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = T[key])
             stat_label.pack(side = "right", fill="x")
+            
+    def find_paths(self, directory):
+        """
+        Znajduje nazwy plikow w formacie .dot dla wskazanego folderu
+        directory - folder w którym szukami plików
+        return - lista scieżek plików w formacie dot
+        """
+        files_list = os.listdir(directory)
+        print(files_list)
+        result_list = []
+        for file in files_list:
+            if ".dot" == file[-4:]:
+                result_list.append(file)
+        return result_list
+
+
 
 
 graph_photos = ["test1.png", "test2.png", "test3.png"]
 graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
-app = Window(graph_photos, root )
+app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
 root.mainloop()
