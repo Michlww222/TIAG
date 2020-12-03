@@ -24,9 +24,14 @@ class Window(tk.Frame):
         self.master.geometry("1080x620")
         self.graph_photos = graph_photos
         
+        self.current_production_ID = None
+        self.current_grpah_ID = 0
         
         self.start_graph_paths = self.find_paths(starts_graph_dir)
-        print(self.start_graph_paths)
+        self.results_graph_paths = self.find_paths(final_graph_dir)
+        self.graph_paths = self.start_graph_paths + self.results_graph_paths
+        
+        print(self.graph_paths)
         
         menu_frame = tk.Frame(self.master, bg="yellow")
         menu_frame.pack(side="left", fill = "y")
@@ -39,7 +44,7 @@ class Window(tk.Frame):
         graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "yellow")
         graphs.pack()
         
-        self.pack_listbox(menu_graph_frame, [str(i) for i in range(50)])
+        self.pack_listbox(menu_graph_frame, self.graph_paths)
         
         graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Next",
                                command = lambda:self.next_graph(show_frame))
@@ -53,24 +58,18 @@ class Window(tk.Frame):
         productions = tk.Label(productions_menu_frame, text = "Productions", bg="blue")
         productions.pack(fill = "y")
         
-        self.pack_listbox(productions_menu_frame, ["First", "Second", "Third", "Fourth", "Fifth"])
+        self.productions_paths = self.find_paths(production_dir)
+        self.pack_listbox(productions_menu_frame, self.productions_paths, graphlistbox=False)
         
         productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Next")
         productions_next.pack()
         productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Previous")
         productions_next.pack()
         
-        
-        #self.show_image_at_position(self.graph_photos[1], 100, 100, 200, 200)
-        #self.show_image_at_position(self.graph_photos[2], 500, 100, 200, 200)
-        
         #wizualizacja grafów i statystyki
         stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
         stats_frame.pack(side = "bottom")
         self.pack_graph_statistics(stats_frame, [1,1,1,1,1.25,1])
-        #self.pack_embedding_transformation(stats_frame,{"a": "Y","b": "c",
-        #                                                "c": "Y","d": "a",
-        #                                                "X": "c","Y": "Y",})
         
         self.pack_graph_image(show_frame, self.graph_photos[0])
         #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
@@ -94,16 +93,29 @@ class Window(tk.Frame):
         next_label.after(3000, next_label.destroy) # samoznikający napis
         print("next pressed")
         
-    def pack_listbox(self, frame, elements):
+    def submintFunction(self):
+        print("Nacisnieto listboxa")
+        
+    def selected_element_on_listbox(self, path, is_graph):
+        """
+        
+        """
+        print(str(is_graph) + " - " + path)
+        
+    def pack_listbox(self, frame, elements, graphlistbox = True):
         """
         Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy
         frame - Frame gdzie ma zostać umieszczony listbox
         elements - tablica zawierająca jakie elementy mają zawierać się w listboxie
+        
         """
         listbox_frame = tk.Frame(frame)
         listbox_frame.pack()
         
-        listbox = tk.Listbox(listbox_frame)
+        listbox = tk.Listbox(listbox_frame, exportselection=False)
+        listbox.bind('<<ListboxSelect>>', lambda e:
+                     self.selected_element_on_listbox(
+                         listbox.get(listbox.curselection()), graphlistbox))
         for i, element in enumerate(elements):
             listbox.insert(i, element)
         listbox.pack(side="left", fill="both")
@@ -113,22 +125,6 @@ class Window(tk.Frame):
         
         listbox.config(yscrollcommand = scrollbar.set)
         scrollbar.config(command = listbox.yview)
-        
-    def show_image_at_position(self,path, x, y, width, height):
-        """
-        Umieszcza obraz na danej pozycji
-        path - scieżka do obrazu
-        x - współrzędna x lewego górnego rogu
-        y - współrzędna y lewego górnego roku
-        width - szerekosć obrazu
-        height - wysokosc obrazu
-        """
-        img = Image.open(path)
-        img = img.resize((width, height))
-        photo = ImageTk.PhotoImage(img)
-        panel = tk.Label(self.master, image = photo)
-        panel.image = photo
-        panel.place(x=x,y=y)
         
     def pack_graph_statistics(self, stats_frame, stats):
         """
