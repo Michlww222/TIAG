@@ -33,17 +33,22 @@ def pydot_graph_to_graph(graph_p, name):
     return graph_g
 
 
-def read_Graph(name):
+def read_Graph(directory, name):
     """
     Read a graph from 'graphs\name.dot'
     :param name: name of graph to read
+    directory - directory
     :return: graph (class Graph_Transformation)
     """
-    filename = "grafy_startowe\\" + name + ".dot"
-    graph_p = pydot.graph_from_dot_file(filename)[0]
-    graph_g =pydot_graph_to_graph(graph_p, name)
 
-    return graph_to_graph_transformation(graph_g)
+    try:
+        filename = directory + "\\" + name + ".dot"
+        graph_p = pydot.graph_from_dot_file(filename)[0]
+        graph_g =pydot_graph_to_graph(graph_p, name)
+
+        return graph_to_graph_transformation(graph_g)
+    except:
+        return Graph_Transformation("empty")
 # end def
 
 
