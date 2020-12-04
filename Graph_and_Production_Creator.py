@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 27  2020
+Created on Nov 27  2020
 
 @author: Piotr Biały
 """
@@ -17,7 +17,7 @@ class Graph_Creaotr():
         else:
             self.graph = Graph(name=name)
         if filename is None:
-            self.filename = "graphs\\" + self.graph.name + ".dot"
+            self.filename = "grafy_startowe\\" + self.graph.name + ".dot"
         else:
             self.filename = filename
         self.create_nodes()
