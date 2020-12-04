@@ -2,6 +2,7 @@
 @author: Michał Wąsik
 """
 from Graph import Graph_Transformation
+from read_Graph import read_Graph
 
 class GraphData:
    
@@ -103,19 +104,15 @@ class GraphData:
         #liczba wierzchołków przez ilośc spójnych składowych
         return len(self.V)/self.number_of_components()
     
-    def data_print(self): #Done
-        data = [self.number_of_nodes(),self.number_of_edges(),self.number_of_components(),self.average_of_nodes_degree(),self.average_ABCD_nodes_degree(),self.average_of_nodes_in_components()]
-        return ('number of nodes: ' + str(data[0]) + '\nnumber of edges: ' + str(data[1]) +
-                '\nnumber of components:' + str(data[2]) + '\naverage of nodes degree: ' + str(data[3]) +
-                '\naverage of "a,b,c,d" nodes degree: ' + str(data[4]) + '\naverage of nodes in components: ' + str(data[5]))
+    def get_data(self): #Done
+        data = [self.number_of_nodes(),self.number_of_edges(),
+                self.number_of_components(),self.average_of_nodes_degree(),
+                self.average_ABCD_nodes_degree(),self.average_of_nodes_in_components()]
+        return data
     
-
-V_1 = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
-E_1 = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
-G = Graph_Transformation('test1.png')
-G.body.extend(V_1)
-G.body.extend(E_1)
+    
+G = read_Graph("grafy_startowe", "Barry")
 print(G.body)
 graphdata = GraphData(G)
-print(graphdata.data_print())
+print(graphdata.get_data())
 

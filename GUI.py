@@ -8,6 +8,9 @@ Created on Wed Nov 25 20:26:21 2020
 import tkinter as tk
 from PIL import ImageTk, Image
 import tkinter.ttk
+import read_Graph as readG
+from Graph import Graph_Transformation
+import GraphData
 import os
 
 class Window(tk.Frame):
@@ -31,9 +34,12 @@ class Window(tk.Frame):
         self.results_graph_paths = self.find_paths(final_graph_dir)
         self.graph_paths = self.start_graph_paths + self.results_graph_paths
         
+        self.photo_frame = None;
+        
         print(self.graph_paths)
         
         menu_frame = tk.Frame(self.master, bg="yellow")
+        
         menu_frame.pack(side="left", fill = "y")
         show_frame = tk.Frame(self.master, bg = "green");
         show_frame.pack(fill = "both", expand = "yes")
@@ -66,14 +72,46 @@ class Window(tk.Frame):
         productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Previous")
         productions_next.pack()
         
+        
+        
         #wizualizacja grafów i statystyki
         stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
         stats_frame.pack(side = "bottom")
+        photos_frame = tk.Frame(show_frame)
+        photos_frame.pack()
         self.pack_graph_statistics(stats_frame, [1,1,1,1,1.25,1])
         
         self.pack_graph_image(show_frame, self.graph_photos[0])
         #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
+        self.show_graph("Barry", photos_frame, stats_frame)
         
+    def frame_destroy_content(self, frame):
+        """
+        Usuwa każdy element będący dzieckiem okreslonego Frama
+        frame - nazwa Frame dla której usuwamy dzieci
+        """
+        children = frame.winfo_children()
+        print(children)
+        for child in children:
+            child.destroy()
+
+    def show_graph(self, path, photo_frame, stats_frame):
+        """
+        Wyswietla graf wraz z jego statystykami
+        path - scieżka gdzie zapisany jest graf
+        photo_frame - Frame gdzie ma  zostać wyswietlone zdjecie
+        stats_frame - Frame gdzie mają zostać wyswietlone statystyki
+        """
+        self.frame_destroy_content(photo_frame)
+        self.frame_destroy_content(stats_frame)
+        
+        graph = readG.read_Graph("grafy_startowe", path)
+        print("Ciało grafu")
+        print(graph.body)
+        readed_graph = GraphData.GraphData(graph)
+        graph_stats = readed_graph.get_data()
+        self.pack_graph_statistics(stats_frame,graph_stats)
+
     def pack_graph_image(self, frame, path):
         """
         Wstawia obraz znajdujący się z danym pliku w podane miejsce
@@ -174,7 +212,7 @@ class Window(tk.Frame):
         result_list = []
         for file in files_list:
             if ".dot" == file[-4:]:
-                result_list.append(file)
+                result_list.append(file[:-4])
         return result_list
 
 
