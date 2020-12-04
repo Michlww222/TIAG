@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Nov 28 2020
+Created on Nov 28 2020
 
 @author: Piotr Biały
 """
@@ -11,6 +11,7 @@ import pydot
 from graphviz import Graph
 import os
 
+from Production import Production
 
 
 def graph_to_graph_transformation(graph_g):
@@ -39,6 +40,7 @@ def read_Graph(directory, name):
     directory - directory
     :return: graph (class Graph_Transformation)
     """
+
     try:
         filename = directory + "\\" + name + ".dot"
         graph_p = pydot.graph_from_dot_file(filename)[0]
@@ -76,30 +78,28 @@ def read_Production(name):
     """
     Read a production from 'productions\name.dot'
     :param name: name of production to read
-    :return: left site production graph, right site production graph (class Graph_Transformation) ,embed transformation as dictionary
+    :return: Production object
     """
     filename = "productions\\" + name + ".dot"
     left_p = pydot.graph_from_dot_file(filename)[0]
     right_p = pydot.graph_from_dot_file(filename)[1]
-    return graph_to_graph_transformation(pydot_graph_to_graph(left_p, name)), \
-        graph_to_graph_transformation(pydot_graph_to_graph(right_p, name)), \
-        read_embed_transformation(filename)
-
+    l = graph_to_graph_transformation(pydot_graph_to_graph(left_p, name))
+    r = graph_to_graph_transformation(pydot_graph_to_graph(right_p, name))
+    e = read_embed_transformation(filename)
+    return Production(l, r, e)
 # end def
 
 
 def read_all_Productions():
     """
     Read all productions from directory productions\
-    :return: dictionary of right site production graphs, dictionary of left site production graphs, dictionary of dictionaries od embed tranformation
+    :return: dictionary of all Productions, with key = name of production
     """
-    R, L ,E = {}, {}, {}
+    P = {}
     productions = os.listdir("productions\\")
     for production_file in productions:
         name = get_production_name("productions\\" + production_file)
-        r, l, e = read_Production(name)
-        R[name] = r
-        L[name] = l
-        E[name] = e
-    return R, L, E
+        P[name] = read_Production(name)
+
+    return P
 # end def
