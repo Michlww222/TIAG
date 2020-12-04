@@ -11,7 +11,7 @@ from graphviz import Graph
 
 class Graph_Creaotr():
 
-    def __init__(self, filename=None, name=None):
+    def __init__(self, filename=None, name=None, start_graph=True):
         if name is None:
             self.graph = Graph(name=self.create_name())
         else:
@@ -22,7 +22,7 @@ class Graph_Creaotr():
             self.filename = filename
         self.create_nodes()
         self.create_edges()
-        self.finish_creating(self.filename)
+        self.finish_creating(self.filename, start_graph)
 
     def create_name(self):
         print("Enter the name of your new graph")
@@ -49,13 +49,17 @@ class Graph_Creaotr():
                 print("You enter too much arguments")
             command = input().split()
 
-    def finish_creating(self, filename):
+    def finish_creating(self, filename, also_png):
         print("Your graph will be in file '" + filename + "'")
-        file = open(self.filename, "a")
-        with file:
-            file.write(self.graph.source)
-            file.write("\n")
-        file.close()
+        if (also_png):
+            self.graph.render(filename="grafy_startowe\dot\\" + self.graph.name)
+            self.graph.render(filename="grafy_startowe\png\\" + self.graph.name, format='png')
+        else:
+            file = open(self.filename, "a")
+            with file:
+                file.write(self.graph.source)
+                file.write("\n")
+            file.close()
 # end def
 
 
@@ -69,10 +73,10 @@ class Production_Creator():
         self.add_to_file("# name: " + self.name)
         self.add_to_file("# --- #")
         print("Now you creating left site production graph")
-        Graph_Creaotr(filename=self.filename, name=self.name + "Left")
+        Graph_Creaotr(filename=self.filename, name=self.name + "Left", start_graph=False)
         self.add_to_file("# --- #")
         print("Now you creating right site production graph")
-        Graph_Creaotr(filename=self.filename, name=self.name + "Right")
+        Graph_Creaotr(filename=self.filename, name=self.name + "Right", start_graph=False)
         self.add_to_file("# --- #")
         self.create_embed_transformation()
 

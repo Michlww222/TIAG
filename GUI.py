@@ -37,45 +37,45 @@ class Window(tk.Frame):
         
         print(self.graph_paths)
         
-        menu_frame = tk.Frame(self.master, bg="yellow")
+        menu_frame = tk.Frame(self.master, bg="white")
         
         menu_frame.pack(side="left", fill = "y")
-        show_frame = tk.Frame(self.master, bg = "green");
+        show_frame = tk.Frame(self.master, bg = "gray");
         show_frame.pack(fill = "both", expand = "yes")
         
-        menu_graph_frame = tk.Frame(menu_frame, bg = "yellow")
+        menu_graph_frame = tk.Frame(menu_frame, bg = "white")
         menu_graph_frame.pack(side="top")
         
-        graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "yellow")
+        graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "green")
         graphs.pack()
         
         graph_listbox = self.pack_listbox(menu_graph_frame, self.graph_paths)
         
-        graph_next = tk.Button(menu_graph_frame, bg="blue", text = "Next",
+        graph_next = tk.Button(menu_graph_frame, bg="gray", text = "Next",
                                command = lambda:self.next_button(graph_listbox))
         graph_next.pack()
-        graph_previous = tk.Button(menu_graph_frame, bg="blue", text = "Previous",
+        graph_previous = tk.Button(menu_graph_frame, bg="gray", text = "Previous",
                                    command = lambda: self.previous_button(graph_listbox))
         graph_previous.pack()
         
-        productions_menu_frame = tk.Frame(menu_frame, bg= "red")
+        productions_menu_frame = tk.Frame(menu_frame, bg= "white")
         productions_menu_frame.pack(side="bottom")
         
-        productions = tk.Label(productions_menu_frame, text = "Productions", bg="blue")
+        productions = tk.Label(productions_menu_frame, text = "Productions", bg="green")
         productions.pack(fill = "y")
         
         self.productions_paths = self.find_paths(production_dir)
         self.pack_listbox(productions_menu_frame, self.productions_paths, graphlistbox=False)
         
-        productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Next")
+        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Next")
         productions_next.pack()
-        productions_next = tk.Button(productions_menu_frame, bg="blue", text = "Previous")
+        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Previous")
         productions_next.pack()
         
         
         
         #wizualizacja grafów i statystyki
-        self.stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
+        self.stats_frame = tk.Frame(show_frame, bg = "green", width = 150, )
         self.stats_frame.pack(side = "bottom")
         self.photos_frame = tk.Frame(show_frame)
         self.photos_frame.pack()
@@ -232,7 +232,7 @@ class Window(tk.Frame):
         stats_frame - Frame gdzie mają zostać umieszczone statystyki
         stats - tablica z wartosciami poszczególnych statystyk
         """
-        title_stats_label = tk.Label(stats_frame, text = "Stats:")
+        title_stats_label = tk.Label(stats_frame, text = "Stats:", bg= "green")
         title_stats_label.pack()
         descriptions = ["Nodes:", "Edges:", "Components:",
                         "Average degree:","Average degree in a,b,c,d nodes:",
@@ -241,7 +241,7 @@ class Window(tk.Frame):
         for description, stat in zip(descriptions, stats):
             element_frame = tk.Frame(stats_frame)
             element_frame.pack(fill="x")
-            description_label = tk.Label(element_frame, text = description, bg= "yellow")
+            description_label = tk.Label(element_frame, text = description, bg= "white")
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = str(stat))
             stat_label.pack(side = "right", fill="x")
@@ -285,4 +285,5 @@ graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
+
 root.mainloop()
