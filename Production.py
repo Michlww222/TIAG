@@ -2,7 +2,7 @@
 """
 Created on Tue Nov 17 13:51:14 2020
 
-@author: PaweŁ Świder
+@author: PaweŁ Świder (95%), Piotr Biały (5%)
 """
 
 from Graph import Graph_Transformation, find_unique_names
@@ -31,52 +31,57 @@ class Production():
         #dane wierzchołka L
         L_node = self.L.body[0]
         L_label = get_label(L_node)
-        #dane wierzchołka w L grafie G 
-        L_node_in_G = G.find_nodes_with_label(L_label)[0]
-        L_node_in_G_name = get_name(L_node_in_G)
-        
-        #krawędzie pomiędzy G i podgrafem L
-        L_border_edges = G.find_edges_to_node(L_node_in_G_name)
-        G_border_edges_names = [get_names_from_edge(edge) for edge in L_border_edges]
-        G_border_nodes_names = []
-        for first, second in G_border_edges_names:
-            if first == L_node_in_G_name:
-                G_border_nodes_names.append(second)
-            else:
-                G_border_nodes_names.append(first)
-        #stworzenie nowego grafu, wstawienie do niego częsci nienależacych do L
-        #napisanie nazw w grafie G2
-        G2 = Graph_Transformation(name_G2)
-        
-        G_nodes, G_edges = G.find_nodes_and_edges()
-        G_nodes.remove(L_node_in_G)
-        G_edges = [edge for edge in G_edges if edge not in L_border_edges]
-        names = [int(get_name(node)) for node in G_nodes]
-        names.sort()
-        print(names)
-        
-        G2.body.extend(G_nodes)
-        G2.body.extend(G_edges)
-        
-        R_nodes, _ = self.R.find_nodes_and_edges()
-        #znajdujemy nowe nazwy dla grafu R 
-        R_new_names = find_unique_names(names,len(R_nodes))
-        R_old_names = [get_name(element) for element in R_nodes]
-        #tworzymy translator
-        translator = {old: new for old, new in zip(R_old_names,R_new_names)}
-        
-        #sprawiamy żeby graf R nie kolidował z grafem G2 i wstawiamy R2 w G2
-        R2 = self.R.translate_graph(translator, "R2")
-        G2.body.extend(R2.body)
-        
-        #znalezienie label dla krawędzi "zwisających"
-        # author Piotr Biały
-        #G2.body.extend(find_border_edges())
-        border_nodes_labels = G.find_labels(G_border_nodes_names)
-        print(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
+        #dane wierzchołka w L grafie G
+        L_label_nodes_in_G = G.find_nodes_with_label(L_label)
+        if len(L_label_nodes_in_G) > 0:
+            L_node_in_G = L_label_nodes_in_G[0]
+            L_node_in_G_name = get_name(L_node_in_G)
 
-        G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
-        return G2
+            #krawędzie pomiędzy G i podgrafem L
+            L_border_edges = G.find_edges_to_node(L_node_in_G_name)
+            G_border_edges_names = [get_names_from_edge(edge) for edge in L_border_edges]
+            G_border_nodes_names = []
+            for first, second in G_border_edges_names:
+                if first == L_node_in_G_name:
+                    G_border_nodes_names.append(second)
+                else:
+                    G_border_nodes_names.append(first)
+            #stworzenie nowego grafu, wstawienie do niego częsci nienależacych do L
+            #napisanie nazw w grafie G2
+            G2 = Graph_Transformation(name_G2)
+
+            G_nodes, G_edges = G.find_nodes_and_edges()
+            G_nodes.remove(L_node_in_G)
+            G_edges = [edge for edge in G_edges if edge not in L_border_edges]
+            names = [int(get_name(node)) for node in G_nodes]
+            names.sort()
+            print(names)
+
+            G2.body.extend(G_nodes)
+            G2.body.extend(G_edges)
+
+            R_nodes, _ = self.R.find_nodes_and_edges()
+            #znajdujemy nowe nazwy dla grafu R
+            R_new_names = find_unique_names(names,len(R_nodes))
+            R_old_names = [get_name(element) for element in R_nodes]
+            #tworzymy translator
+            translator = {old: new for old, new in zip(R_old_names,R_new_names)}
+
+            #sprawiamy żeby graf R nie kolidował z grafem G2 i wstawiamy R2 w G2
+            R2 = self.R.translate_graph(translator, "R2")
+            G2.body.extend(R2.body)
+
+            #znalezienie label dla krawędzi "zwisających"
+            # author Piotr Biały
+            #G2.body.extend(find_border_edges())
+            border_nodes_labels = G.find_labels(G_border_nodes_names)
+            print(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
+
+            G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
+            return G2
+
+        else:
+            return G
     
     def find_border_edges(self, border_nodes_names,border_nodes_labels, R):
         """
