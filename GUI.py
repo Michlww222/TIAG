@@ -75,15 +75,15 @@ class Window(tk.Frame):
         
         
         #wizualizacja grafów i statystyki
-        stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
-        stats_frame.pack(side = "bottom")
-        photos_frame = tk.Frame(show_frame)
-        photos_frame.pack()
-        self.pack_graph_statistics(stats_frame, [1,1,1,1,1.25,1])
+        self.stats_frame = tk.Frame(show_frame, bg = "blue", width = 150, )
+        self.stats_frame.pack(side = "bottom")
+        self.photos_frame = tk.Frame(show_frame)
+        self.photos_frame.pack()
+        self.pack_graph_statistics(self.stats_frame, [1,1,1,1,1.25,1])
         
         self.pack_graph_image(show_frame, self.graph_photos[0])
         #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
-        self.show_graph("Barry", photos_frame, stats_frame)
+        self.show_graph("Barry", self.photos_frame, self.stats_frame)
         
     def frame_destroy_content(self, frame):
         """
@@ -106,11 +106,17 @@ class Window(tk.Frame):
         self.frame_destroy_content(stats_frame)
         
         graph = readG.read_Graph("grafy_startowe", path)
+        if graph.body == []:
+            graph = readG.read_Graph("results", path)
         print("Ciało grafu")
         print(graph.body)
         readed_graph = GraphData.GraphData(graph)
         graph_stats = readed_graph.get_data()
         self.pack_graph_statistics(stats_frame,graph_stats)
+        
+        label = tk.Label(photo_frame, text=path)
+        label.pack()
+        
 
     def pack_graph_image(self, frame, path):
         """
@@ -136,10 +142,12 @@ class Window(tk.Frame):
         
     def selected_element_on_listbox(self, path, is_graph):
         """
-        
+        Reaguje na nacisniecie listboxa
         """
-        print(str(is_graph) + " - " + path)
-        
+        if is_graph == True:
+            self.show_graph(path,self.photos_frame, self.stats_frame)
+        else:
+            self.show_production(path, self.photos_frame, self.stats_frame)
     def pack_listbox(self, frame, elements, graphlistbox = True):
         """
         Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy

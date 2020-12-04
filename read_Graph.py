@@ -39,11 +39,14 @@ def read_Graph(directory, name):
     directory - directory
     :return: graph (class Graph_Transformation)
     """
-    filename = directory + "\\" + name + ".dot"
-    graph_p = pydot.graph_from_dot_file(filename)[0]
-    graph_g =pydot_graph_to_graph(graph_p, name)
+    try:
+        filename = directory + "\\" + name + ".dot"
+        graph_p = pydot.graph_from_dot_file(filename)[0]
+        graph_g =pydot_graph_to_graph(graph_p, name)
 
-    return graph_to_graph_transformation(graph_g)
+        return graph_to_graph_transformation(graph_g)
+    except:
+        return Graph_Transformation("empty")
 # end def
 
 
@@ -79,8 +82,9 @@ def read_Production(name):
     left_p = pydot.graph_from_dot_file(filename)[0]
     right_p = pydot.graph_from_dot_file(filename)[1]
     return graph_to_graph_transformation(pydot_graph_to_graph(left_p, name)), \
-           graph_to_graph_transformation(pydot_graph_to_graph(right_p, name)), \
-           read_embed_transformation(filename)
+        graph_to_graph_transformation(pydot_graph_to_graph(right_p, name)), \
+        read_embed_transformation(filename)
+
 # end def
 
 
