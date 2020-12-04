@@ -285,4 +285,5 @@ graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
+
 root.mainloop()
