@@ -72,7 +72,7 @@ class GraphData:
         
     def average_of_nodes_degree(self): #Done
         #średni stopień wierzchołka
-        return 2*len(self.E)/len(self.V)
+        return round(2*len(self.E)/len(self.V),2)
 
     def average_ABCD_nodes_degree(self): #Done
         #średni stopień wierzchołka a b c d
@@ -98,7 +98,7 @@ class GraphData:
                     returnvar += 1
         
         #dziele te polacznia przez liczbe wierzcholkow a,b,c,d
-        return returnvar/len(supportlist)
+        return round(returnvar/len(supportlist), 2)
 
     def average_of_nodes_in_components(self): #Done
         #liczba wierzchołków przez ilośc spójnych składowych

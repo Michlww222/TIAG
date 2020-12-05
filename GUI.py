@@ -319,5 +319,3 @@ class Window(tk.Frame):
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
-
-root.mainloop()
