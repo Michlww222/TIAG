@@ -11,12 +11,12 @@ import tkinter.ttk
 import read_Graph as readG
 import GraphData
 import os
+from produce_Graph import produce
 
 class Window(tk.Frame):
     def __init__(self,master=None, production_dir = "productions",
                  final_graph_dir = "results", starts_graph_dir = "grafy_startowe"):
         """
-        graph_photos - tablica z plikami png zawierającymi grafy
         production_dir - folder z produkcjami
         final_graph_dir - folder z grafami wynikowymi
         starts_graph_dir - floder z grafami startowymi
@@ -24,65 +24,67 @@ class Window(tk.Frame):
         tk.Frame.__init__(self, master)
         self.master = master
         self.master.geometry("1080x620")
-        self.graph_photos = graph_photos
         
-        self.current_production_ID = None
-        self.current_grpah_ID = 0
-        
+        self.current_production_ID = 0
+        self.current_graph_ID = 0
+
+        self.final_graph_dir = final_graph_dir
+
         self.start_graph_paths = self.find_paths(starts_graph_dir)
         self.results_graph_paths = self.find_paths(final_graph_dir)
         self.graph_paths = self.start_graph_paths + self.results_graph_paths
         
-        self.photo_frame = None;
+        self.menu_frame = tk.Frame(self.master, bg="white")
         
-        print(self.graph_paths)
-        
-        menu_frame = tk.Frame(self.master, bg="white")
-        
-        menu_frame.pack(side="left", fill = "y")
-        show_frame = tk.Frame(self.master, bg = "gray");
+        self.menu_frame.pack(side="left", fill = "y")
+        show_frame = tk.Frame(self.master, bg = "gray")
         show_frame.pack(fill = "both", expand = "yes")
         
-        menu_graph_frame = tk.Frame(menu_frame, bg = "white")
+        menu_graph_frame = tk.Frame(self.menu_frame, bg = "white")
         menu_graph_frame.pack(side="top")
+
+        self.menu_graph_frame = menu_graph_frame
         
         graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "green")
         graphs.pack()
         
-        graph_listbox = self.pack_listbox(menu_graph_frame, self.graph_paths)
+        self.graph_listbox, self.graph_scrollbar, self.graph_listbox_frame = self.pack_listbox(menu_graph_frame, self.graph_paths)
         
-        graph_next = tk.Button(menu_graph_frame, bg="gray", text = "Next",
-                               command = lambda:self.next_button(graph_listbox))
-        graph_next.pack()
-        graph_previous = tk.Button(menu_graph_frame, bg="gray", text = "Previous",
-                                   command = lambda: self.previous_button(graph_listbox))
-        graph_previous.pack()
+        self.graph_next = tk.Button(menu_graph_frame, bg="gray", text = "Next",
+                               command = lambda:self.next_button(self.graph_listbox, True))
+        self.graph_next.pack()
+        self.graph_previous = tk.Button(menu_graph_frame, bg="gray", text = "Previous",
+                                   command = lambda: self.previous_button(self.graph_listbox, True))
+        self.graph_previous.pack()
+
         
-        productions_menu_frame = tk.Frame(menu_frame, bg= "white")
+        productions_menu_frame = tk.Frame(self.menu_frame, bg= "white")
         productions_menu_frame.pack(side="bottom")
         
         productions = tk.Label(productions_menu_frame, text = "Productions", bg="green")
         productions.pack(fill = "y")
         
         self.productions_paths = self.find_paths(production_dir)
-        self.pack_listbox(productions_menu_frame, self.productions_paths, graphlistbox=False)
+        production_listbox, _, _ = self.pack_listbox(productions_menu_frame,
+                          self.productions_paths, graphlistbox=False)
         
-        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Next")
+        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Next",
+                                     command = lambda: self.next_button(production_listbox, False))
         productions_next.pack()
-        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Previous")
+        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Previous",
+                                     command = lambda: self.previous_button(production_listbox, False))
         productions_next.pack()
-        
-        
+
+        #przycisk produce
+        produce = tk.Button(text="Produce", bg="green", command = lambda: self.produce(self.graph_listbox, production_listbox))
+        produce.place(x=42, y=270)
         
         #wizualizacja grafów i statystyki
         self.stats_frame = tk.Frame(show_frame, bg = "green", width = 150, )
         self.stats_frame.pack(side = "bottom")
-        self.photos_frame = tk.Frame(show_frame)
-        self.photos_frame.pack()
-        self.pack_graph_statistics(self.stats_frame, [1,1,1,1,1.25,1])
+        self.photos_frame = tk.Frame(show_frame, bg = "grey")
+        self.photos_frame.pack(fill="both", expand = "yes")
         
-        self.pack_graph_image(show_frame, self.graph_photos[0])
-        #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
         self.show_graph("Barry", self.photos_frame, self.stats_frame)
         
     def frame_destroy_content(self, frame):
@@ -114,9 +116,17 @@ class Window(tk.Frame):
         graph_stats = readed_graph.get_data()
         self.pack_graph_statistics(stats_frame,graph_stats)
         
-        label = tk.Label(photo_frame, text=path)
+        path_to_png = graph.render(filename=path, directory = "graph_photos",
+                                   cleanup=True, format="png")
+        
+        label = tk.Label(photo_frame, text=path, bg = "grey")
         label.pack()
         
+        print(path_to_png)
+        graph_image = self.label_graph_image(photo_frame, path_to_png)
+        
+        graph_image.pack(pady= 20, padx = 20)
+
     def show_production(self, path, photo_frame, stats_frame):
         """
         Wyswiatla dana produkcje wraz z transformacja osadzenia
@@ -127,13 +137,23 @@ class Window(tk.Frame):
         self.frame_destroy_content(photo_frame)
         self.frame_destroy_content(stats_frame)
         
-        production = readG.read_Production()
+        production = readG.read_Production(path)
         self.pack_embedding_transformation(stats_frame, production.T)
         
-        label = tk.Label(photo_frame, text=path)
+        label = tk.Label(photo_frame, text=path,  pady = 50, bg = "grey")
         label.pack()
         
-    def pack_graph_image(self, frame, path):
+        path_to_png = production.R.render(filename=path+"_right", directory = "graph_photos",
+                            cleanup=True, format="png")
+        rigth_image = self.label_graph_image(photo_frame, path_to_png)
+        rigth_image.pack(padx= 100, side="right")
+        
+        path_to_png = production.L.render(filename=path+"_left", directory = "graph_photos",
+                            cleanup=True, format="png")
+        left_image = self.label_graph_image(photo_frame, path_to_png)
+        left_image.pack(padx= 100, side = "left")
+        
+    def label_graph_image(self, frame, path):
         """
         Wstawia obraz znajdujący się z danym pliku w podane miejsce
         frame - Frame gdzie ma zostać umieszczony obraz
@@ -141,15 +161,15 @@ class Window(tk.Frame):
         """
         loaded_image = Image.open(path)
         rendered_image = ImageTk.PhotoImage(loaded_image)
-        label_with_image = tk.Label(frame, image = rendered_image)
+        label_with_image = tk.Label(frame, image = rendered_image, anchor="center")
         label_with_image.image = rendered_image
-        label_with_image.place(relx = 0.5, rely = 0.5, 
-                   anchor = 'center')
+        return label_with_image
         
-    def next_button(self, listbox):
+    def next_button(self, listbox, graph_or_production):
         """
         Przełącza graf na następny
         listbox - listbox w której mamy włączyć następny element
+        graph_or_production - True jesli listbox grafów, false jesli produkcji
         """
         
         if len(listbox.curselection()) == 0:
@@ -163,14 +183,15 @@ class Window(tk.Frame):
             listbox.selection_set(idx+1)
             path = listbox.get(idx+1)
             print("Scieżka:" + path)
-            self.selected_element_on_listbox(path, True)
+            self.selected_element_on_listbox(path, graph_or_production)
         except:
             print("It is the last index")
 
-    def previous_button(self, listbox):
+    def previous_button(self, listbox, graph_or_production):
         """
         Przełącza graf na następny
         listbox - listbox w której mamy włączyć następny element
+        graph_or_production - True jesli listbox grafów, false jesli produkcji
         """
         
         if len(listbox.curselection()) == 0:
@@ -184,13 +205,10 @@ class Window(tk.Frame):
             listbox.selection_set(idx-1)
             path = listbox.get(idx-1)
             print("Scieżka:" + path)
-            self.selected_element_on_listbox(path, True)
+            self.selected_element_on_listbox(path, graph_or_production)
         except:
             print("It is the first index")
 
-
-    def submintFunction(self):
-        print("Nacisnieto listboxa")
         
     def selected_element_on_listbox(self, path, is_graph):
         """
@@ -200,6 +218,7 @@ class Window(tk.Frame):
             self.show_graph(path,self.photos_frame, self.stats_frame)
         else:
             self.show_production(path, self.photos_frame, self.stats_frame)
+            
     def pack_listbox(self, frame, elements, graphlistbox = True):
         """
         Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy
@@ -221,10 +240,12 @@ class Window(tk.Frame):
         scrollbar = tk.Scrollbar(listbox_frame)
         scrollbar.pack(side="right", fill="y")
         
+        
+        
         listbox.config(yscrollcommand = scrollbar.set)
         scrollbar.config(command = listbox.yview)
         
-        return listbox
+        return listbox, scrollbar, listbox_frame
         
     def pack_graph_statistics(self, stats_frame, stats):
         """
@@ -241,7 +262,7 @@ class Window(tk.Frame):
         for description, stat in zip(descriptions, stats):
             element_frame = tk.Frame(stats_frame)
             element_frame.pack(fill="x")
-            description_label = tk.Label(element_frame, text = description, bg= "white")
+            description_label = tk.Label(element_frame, text = description)
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = str(stat))
             stat_label.pack(side = "right", fill="x")
@@ -252,13 +273,14 @@ class Window(tk.Frame):
         stats_frame - Frame gdzie mają zostać umieszczone statystyki
         T - słownik zawierający transformacje osadzenia
         """
-        title_trans_label = tk.Label(stats_frame, text = "Embedding transformation:")
+        title_trans_label = tk.Label(stats_frame,
+                                     text = "Embedding transformation:", bg = "green")
         title_trans_label.pack()
         
         for key in T.keys():
             element_frame = tk.Frame(stats_frame)
             element_frame.pack(fill="x")
-            description_label = tk.Label(element_frame, text = key, bg= "yellow")
+            description_label = tk.Label(element_frame, text = key)
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = T[key])
             stat_label.pack(side = "right", fill="x")
@@ -269,6 +291,7 @@ class Window(tk.Frame):
         directory - folder w którym szukami plików
         return - lista scieżek plików w formacie dot
         """
+        print(directory)
         files_list = os.listdir(directory)
         print(files_list)
         result_list = []
@@ -277,11 +300,22 @@ class Window(tk.Frame):
                 result_list.append(file[:-4])
         return result_list
 
+    def produce(self, graph_listbox, production_listbox):
+        g_name = self.graph_paths[graph_listbox.curselection()[0]]
+        p_name = self.productions_paths[production_listbox.curselection()[0]]
+        produce(g_name, p_name)
+        self.results_graph_paths = self.find_paths(self.final_graph_dir)
+        self.graph_paths = self.start_graph_paths + self.results_graph_paths
+        self.graph_scrollbar.destroy()
+        self.graph_listbox.destroy()
+        self.graph_listbox_frame.destroy()
+        self.graph_next.forget()
+        self.graph_previous.forget()
+        self.graph_listbox, self.graph_scrollbar, self.graph_listbox_frame = self.pack_listbox(self.menu_graph_frame, self.graph_paths)
+        self.graph_next.pack()
+        self.graph_previous.pack()
+# end def
 
-
-
-graph_photos = ["test1.png", "test2.png", "test3.png"]
-graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
