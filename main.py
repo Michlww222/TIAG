@@ -85,5 +85,5 @@ for prod_arg in prod_args:
     production = Production(prod_arg[0], prod_arg[1], prod_arg[2])
     print(prod_arg[2])
     graph = production.produce(graph, name)
-graph.view()
-graph.render(filename="results\\" +  name + ".dot")
+graph.view(cleanup = True)
+graph.render(filename="graph_photos\\" +  name + ".dot", cleanup = True)
