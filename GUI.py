@@ -57,7 +57,6 @@ class Window(tk.Frame):
                                    command = lambda: self.previous_button(self.graph_listbox, True))
         self.graph_previous.pack()
 
-        
         productions_menu_frame = tk.Frame(self.menu_frame, bg= "white")
         productions_menu_frame.pack(side="bottom")
         
@@ -240,8 +239,6 @@ class Window(tk.Frame):
         scrollbar = tk.Scrollbar(listbox_frame)
         scrollbar.pack(side="right", fill="y")
         
-        
-        
         listbox.config(yscrollcommand = scrollbar.set)
         scrollbar.config(command = listbox.yview)
         
@@ -314,8 +311,8 @@ class Window(tk.Frame):
         self.graph_listbox, self.graph_scrollbar, self.graph_listbox_frame = self.pack_listbox(self.menu_graph_frame, self.graph_paths)
         self.graph_next.pack()
         self.graph_previous.pack()
-# end def
 
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
+root.mainloop()
