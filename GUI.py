@@ -16,7 +16,6 @@ class Window(tk.Frame):
     def __init__(self,master=None, production_dir = "productions",
                  final_graph_dir = "results", starts_graph_dir = "grafy_startowe"):
         """
-        graph_photos - tablica z plikami png zawierającymi grafy
         production_dir - folder z produkcjami
         final_graph_dir - folder z grafami wynikowymi
         starts_graph_dir - floder z grafami startowymi
@@ -24,7 +23,6 @@ class Window(tk.Frame):
         tk.Frame.__init__(self, master)
         self.master = master
         self.master.geometry("1080x620")
-        self.graph_photos = graph_photos
         
         self.current_production_ID = None
         self.current_grpah_ID = 0
@@ -32,10 +30,6 @@ class Window(tk.Frame):
         self.start_graph_paths = self.find_paths(starts_graph_dir)
         self.results_graph_paths = self.find_paths(final_graph_dir)
         self.graph_paths = self.start_graph_paths + self.results_graph_paths
-        
-        self.photo_frame = None;
-        
-        print(self.graph_paths)
         
         menu_frame = tk.Frame(self.master, bg="white")
         
@@ -65,24 +59,20 @@ class Window(tk.Frame):
         productions.pack(fill = "y")
         
         self.productions_paths = self.find_paths(production_dir)
-        self.pack_listbox(productions_menu_frame, self.productions_paths, graphlistbox=False)
+        self.pack_listbox(productions_menu_frame,
+                          self.productions_paths, graphlistbox=False)
         
         productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Next")
         productions_next.pack()
         productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Previous")
         productions_next.pack()
         
-        
-        
         #wizualizacja grafów i statystyki
         self.stats_frame = tk.Frame(show_frame, bg = "green", width = 150, )
         self.stats_frame.pack(side = "bottom")
-        self.photos_frame = tk.Frame(show_frame)
-        self.photos_frame.pack()
-        self.pack_graph_statistics(self.stats_frame, [1,1,1,1,1.25,1])
+        self.photos_frame = tk.Frame(show_frame, bg = "grey")
+        self.photos_frame.pack(fill="both", expand = "yes")
         
-        self.pack_graph_image(show_frame, self.graph_photos[0])
-        #self.show_image_at_position(self.graph_photos[0], 400, 100, 300, 300)
         self.show_graph("Barry", self.photos_frame, self.stats_frame)
         
     def frame_destroy_content(self, frame):
@@ -114,8 +104,14 @@ class Window(tk.Frame):
         graph_stats = readed_graph.get_data()
         self.pack_graph_statistics(stats_frame,graph_stats)
         
+        path_to_png = graph.render(filename=path, directory = "graph_photos",
+                                   cleanup=True, format="png")
+        
         label = tk.Label(photo_frame, text=path)
         label.pack()
+        
+        print(path_to_png)
+        self.pack_graph_image(photo_frame, path_to_png)
         
     def show_production(self, path, photo_frame, stats_frame):
         """
@@ -127,7 +123,7 @@ class Window(tk.Frame):
         self.frame_destroy_content(photo_frame)
         self.frame_destroy_content(stats_frame)
         
-        production = readG.read_Production()
+        production = readG.read_Production(path)
         self.pack_embedding_transformation(stats_frame, production.T)
         
         label = tk.Label(photo_frame, text=path)
@@ -143,8 +139,7 @@ class Window(tk.Frame):
         rendered_image = ImageTk.PhotoImage(loaded_image)
         label_with_image = tk.Label(frame, image = rendered_image)
         label_with_image.image = rendered_image
-        label_with_image.place(relx = 0.5, rely = 0.5, 
-                   anchor = 'center')
+        label_with_image.pack()
         
     def next_button(self, listbox):
         """
@@ -188,9 +183,6 @@ class Window(tk.Frame):
         except:
             print("It is the first index")
 
-
-    def submintFunction(self):
-        print("Nacisnieto listboxa")
         
     def selected_element_on_listbox(self, path, is_graph):
         """
@@ -200,6 +192,7 @@ class Window(tk.Frame):
             self.show_graph(path,self.photos_frame, self.stats_frame)
         else:
             self.show_production(path, self.photos_frame, self.stats_frame)
+            
     def pack_listbox(self, frame, elements, graphlistbox = True):
         """
         Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy
@@ -221,6 +214,8 @@ class Window(tk.Frame):
         scrollbar = tk.Scrollbar(listbox_frame)
         scrollbar.pack(side="right", fill="y")
         
+        
+        
         listbox.config(yscrollcommand = scrollbar.set)
         scrollbar.config(command = listbox.yview)
         
@@ -241,7 +236,7 @@ class Window(tk.Frame):
         for description, stat in zip(descriptions, stats):
             element_frame = tk.Frame(stats_frame)
             element_frame.pack(fill="x")
-            description_label = tk.Label(element_frame, text = description, bg= "white")
+            description_label = tk.Label(element_frame, text = description)
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = str(stat))
             stat_label.pack(side = "right", fill="x")
@@ -252,13 +247,14 @@ class Window(tk.Frame):
         stats_frame - Frame gdzie mają zostać umieszczone statystyki
         T - słownik zawierający transformacje osadzenia
         """
-        title_trans_label = tk.Label(stats_frame, text = "Embedding transformation:")
+        title_trans_label = tk.Label(stats_frame,
+                                     text = "Embedding transformation:", bg = "green")
         title_trans_label.pack()
         
         for key in T.keys():
             element_frame = tk.Frame(stats_frame)
             element_frame.pack(fill="x")
-            description_label = tk.Label(element_frame, text = key, bg= "yellow")
+            description_label = tk.Label(element_frame, text = key)
             description_label.pack(side="left", fill="x")
             stat_label = tk.Label(element_frame, text = T[key])
             stat_label.pack(side = "right", fill="x")
@@ -269,6 +265,7 @@ class Window(tk.Frame):
         directory - folder w którym szukami plików
         return - lista scieżek plików w formacie dot
         """
+        print(directory)
         files_list = os.listdir(directory)
         print(files_list)
         result_list = []
@@ -277,11 +274,6 @@ class Window(tk.Frame):
                 result_list.append(file[:-4])
         return result_list
 
-
-
-
-graph_photos = ["test1.png", "test2.png", "test3.png"]
-graph_photos = ["results/" + photo for photo in graph_photos]
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")
