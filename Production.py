@@ -79,9 +79,10 @@ class Production():
 
             G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
             return G2
-
         else:
-            return G
+            G2 = Graph_Transformation(name_G2)
+            G2.body = G.body
+            return G2
     
     def find_border_edges(self, border_nodes_names,border_nodes_labels, R):
         """
