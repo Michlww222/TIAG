@@ -25,14 +25,16 @@ class GraphData:
             return1 = ''
             return2 = ''
             while(E[i][supportvar].isdigit()):
-                return1 = return1 + V[i][supportvar]
-                supportvar += 3
-            supportvar += 2
+                return1 = return1 + E[i][supportvar]
+                supportvar += 1
+            supportvar += 4
             while(supportvar < len(E[i]) and E[i][supportvar].isdigit()):
                 return2 = return2 + E[i][supportvar]
                 supportvar += 1
             supportlist.append([return1,return2])
         self.E = supportlist
+        print(self.V)
+        print(self.E)
         
     def number_of_nodes(self): #Done
         #długość listy wierzchołków
@@ -72,6 +74,8 @@ class GraphData:
         
     def average_of_nodes_degree(self): #Done
         #średni stopień wierzchołka
+        if(len(self.V) == 0):
+            return None
         return round(2*len(self.E)/len(self.V),2)
 
     def average_ABCD_nodes_degree(self): #Done
@@ -98,11 +102,15 @@ class GraphData:
                     returnvar += 1
         
         #dziele te polacznia przez liczbe wierzcholkow a,b,c,d
-        return round(returnvar/len(supportlist), 2)
+        if(len(supportlist) == 0):
+            return None
+        return round(returnvar/len(supportlist),2)
 
     def average_of_nodes_in_components(self): #Done
         #liczba wierzchołków przez ilośc spójnych składowych
-        return len(self.V)/self.number_of_components()
+        if(self.number_of_components() == 0):
+            return None
+        return round(len(self.V)/self.number_of_components(),2)
     
     def get_data(self): #Done
         data = [self.number_of_nodes(),self.number_of_edges(),
@@ -111,8 +119,5 @@ class GraphData:
         return data
     
     
-G = read_Graph("grafy_startowe", "Barry")
-print(G.body)
-graphdata = GraphData(G)
-print(graphdata.get_data())
+
 
