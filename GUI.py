@@ -11,7 +11,7 @@ import tkinter.ttk
 import read_Graph as readG
 import GraphData
 import os
-from produce_Graph import produce
+import produce_Graph
 
 class Window(tk.Frame):
     def __init__(self,master=None, production_dir = "productions",
@@ -298,19 +298,17 @@ class Window(tk.Frame):
         return result_list
 
     def produce(self, graph_listbox, production_listbox):
-        g_name = self.graph_paths[graph_listbox.curselection()[0]]
-        p_name = self.productions_paths[production_listbox.curselection()[0]]
-        produce(g_name, p_name)
-        self.results_graph_paths = self.find_paths(self.final_graph_dir)
-        self.graph_paths = self.start_graph_paths + self.results_graph_paths
-        self.graph_scrollbar.destroy()
-        self.graph_listbox.destroy()
-        self.graph_listbox_frame.destroy()
-        self.graph_next.forget()
-        self.graph_previous.forget()
-        self.graph_listbox, self.graph_scrollbar, self.graph_listbox_frame = self.pack_listbox(self.menu_graph_frame, self.graph_paths)
-        self.graph_next.pack()
-        self.graph_previous.pack()
+        try:
+            g_name = self.graph_paths[graph_listbox.curselection()[0]]
+            p_name = self.productions_paths[production_listbox.curselection()[0]]
+        except: 
+            print("Not selected graph and production")
+            return
+        
+        produce_Graph.produce(g_name,p_name)
+        graph_listbox.insert(graph_listbox.size(), g_name+p_name)
+        
+        
 
 root = tk.Tk()
 app = Window(root)
