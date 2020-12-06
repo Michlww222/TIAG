@@ -2,6 +2,7 @@
 @author: Michał Wąsik
 """
 from Graph import Graph_Transformation
+from read_Graph import read_Graph
 
 class GraphData:
    
@@ -24,14 +25,16 @@ class GraphData:
             return1 = ''
             return2 = ''
             while(E[i][supportvar].isdigit()):
-                return1 = return1 + V[i][supportvar]
-                supportvar += 3
-            supportvar += 2
+                return1 = return1 + E[i][supportvar]
+                supportvar += 1
+            supportvar += 4
             while(supportvar < len(E[i]) and E[i][supportvar].isdigit()):
                 return2 = return2 + E[i][supportvar]
                 supportvar += 1
             supportlist.append([return1,return2])
         self.E = supportlist
+        print(self.V)
+        print(self.E)
         
     def number_of_nodes(self): #Done
         #długość listy wierzchołków
@@ -71,7 +74,9 @@ class GraphData:
         
     def average_of_nodes_degree(self): #Done
         #średni stopień wierzchołka
-        return 2*len(self.E)/len(self.V)
+        if(len(self.V) == 0):
+            return None
+        return round(2*len(self.E)/len(self.V),2)
 
     def average_ABCD_nodes_degree(self): #Done
         #średni stopień wierzchołka a b c d
@@ -97,25 +102,22 @@ class GraphData:
                     returnvar += 1
         
         #dziele te polacznia przez liczbe wierzcholkow a,b,c,d
-        return returnvar/len(supportlist)
+        if(len(supportlist) == 0):
+            return None
+        return round(returnvar/len(supportlist),2)
 
     def average_of_nodes_in_components(self): #Done
         #liczba wierzchołków przez ilośc spójnych składowych
-        return len(self.V)/self.number_of_components()
+        if(self.number_of_components() == 0):
+            return None
+        return round(len(self.V)/self.number_of_components(),2)
     
-    def data_print(self): #Done
-        data = [self.number_of_nodes(),self.number_of_edges(),self.number_of_components(),self.average_of_nodes_degree(),self.average_ABCD_nodes_degree(),self.average_of_nodes_in_components()]
-        return ('number of nodes: ' + str(data[0]) + '\nnumber of edges: ' + str(data[1]) +
-                '\nnumber of components:' + str(data[2]) + '\naverage of nodes degree: ' + str(data[3]) +
-                '\naverage of "a,b,c,d" nodes degree: ' + str(data[4]) + '\naverage of nodes in components: ' + str(data[5]))
+    def get_data(self): #Done
+        data = [self.number_of_nodes(),self.number_of_edges(),
+                self.number_of_components(),self.average_of_nodes_degree(),
+                self.average_ABCD_nodes_degree(),self.average_of_nodes_in_components()]
+        return data
+    
     
 
-V_1 = ['\t2 [label=c]', '\t3 [label=a]', '\t0 [label=Y]', '\t1 [label=c]', '\t10 [label=a]']
-E_1 = ['\t2 -- 1', '\t1 -- 3', '\t3 -- 2']
-G_Janusz = Graph_Transformation('janusz')
-G_Janusz.body.extend(V_1)
-G_Janusz.body.extend(E_1)
-print(G_Janusz.body)
-graphdata = GraphData(G_Janusz)
-print(graphdata.data_print())
 
