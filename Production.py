@@ -55,7 +55,6 @@ class Production():
             G_edges = [edge for edge in G_edges if edge not in L_border_edges]
             names = [int(get_name(node)) for node in G_nodes]
             names.sort()
-            print(names)
 
             G2.body.extend(G_nodes)
             G2.body.extend(G_edges)
@@ -75,7 +74,6 @@ class Production():
             # author Piotr Biały
             #G2.body.extend(find_border_edges())
             border_nodes_labels = G.find_labels(G_border_nodes_names)
-            print(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
 
             G2.body.extend(self.find_border_edges(G_border_nodes_names,border_nodes_labels,R2))
             return G2

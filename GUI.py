@@ -15,12 +15,14 @@ import produce_Graph
 
 class Window(tk.Frame):
     def __init__(self,master=None, production_dir = "productions",
-                 final_graph_dir = "results", starts_graph_dir = "grafy_startowe"):
+            final_graph_dir = "results", starts_graph_dir = "grafy_startowe",
+            photos_dir = "graph_photos"):
         """
         master - Parent of the window
         production_dir - Directory which contains productions files
         final_graph_dir - Directrory which contains results graphs
-        starts_graph_dir - Directory which contains start_graphs
+        starts_graph_dir - Directory which contains start graphs
+        photos_dir - Directory which contains graph photos
         """
         tk.Frame.__init__(self, master)
         self.master = master
@@ -29,12 +31,11 @@ class Window(tk.Frame):
         self.production_dir = production_dir
         self.final_graph_dir = final_graph_dir
         self.starts_graph_dir = starts_graph_dir
-
-        self.final_graph_dir = final_graph_dir
+        self.photos_dir = photos_dir
 
         start_graph_paths = self.find_paths(starts_graph_dir)
         results_graph_paths = self.find_paths(final_graph_dir)
-        self.graph_paths = start_graph_paths + results_graph_paths
+        graph_paths = start_graph_paths + results_graph_paths
         
         menu_frame = tk.Frame(self.master, bg="white")
         menu_frame.pack(side="left", fill = "y")
@@ -47,39 +48,40 @@ class Window(tk.Frame):
         graphs = tk.Label(menu_graph_frame, text = "Graphs", bg = "green")
         graphs.pack()
         
-        graph_listbox = self.pack_listbox(menu_graph_frame, self.graph_paths)
+        graph_listbox = self.pack_listbox(menu_graph_frame, graph_paths)
         
         graph_next = tk.Button(menu_graph_frame, bg="gray", text = "Next",
-                               command = lambda:self.next_button(graph_listbox, True))
+                          command = lambda:self.next_button(graph_listbox, True))
         graph_next.pack()
         graph_previous = tk.Button(menu_graph_frame, bg="gray", text = "Previous",
-                                   command = lambda: self.previous_button(graph_listbox, True))
+                          command = lambda: self.previous_button(graph_listbox, True))
         graph_previous.pack()
 
         productions_menu_frame = tk.Frame(menu_frame, bg= "white")
         productions_menu_frame.pack(side="bottom")
         
-        productions = tk.Label(productions_menu_frame, text = "Productions", bg="green")
+        productions = tk.Label(productions_menu_frame,
+                               text = "Productions", bg="green")
         productions.pack(fill = "y")
         
-        self.productions_paths = self.find_paths(production_dir)
+        productions_paths = self.find_paths(production_dir)
         production_listbox = self.pack_listbox(productions_menu_frame,
-                          self.productions_paths, graphlistbox=False)
+                                productions_paths, is_graph=False)
         
         productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Next",
-                                     command = lambda: self.next_button(production_listbox, False))
+                                command = lambda: self.next_button(production_listbox, False))
         productions_next.pack()
-        productions_next = tk.Button(productions_menu_frame, bg="gray", text = "Previous",
-                                     command = lambda: self.previous_button(production_listbox, False))
-        productions_next.pack()
+        productions_prev = tk.Button(productions_menu_frame, bg="gray", text = "Previous",
+                                command = lambda: self.previous_button(production_listbox, False))
+        productions_prev.pack()
 
         #Produce button
-        produce = tk.Button(text="Produce", bg="green", 
+        produce = tk.Button(text="Produce", bg="green",
                         command = lambda: self.produce_button(graph_listbox, production_listbox))
         produce.place(x=42, y=270)
         
         #Graph and stats visualization
-        self.stats_frame = tk.Frame(show_frame, bg = "green", width = 150, )
+        self.stats_frame = tk.Frame(show_frame, bg = "green", width = 150)
         self.stats_frame.pack(side = "bottom")
         self.photos_frame = tk.Frame(show_frame, bg = "grey")
         self.photos_frame.pack(fill="both", expand = "yes")
@@ -115,7 +117,7 @@ class Window(tk.Frame):
         
         label = tk.Label(photo_frame, text=name, bg = "grey")
         label.pack()
-        path_to_png = graph.render(filename=name, directory = "graph_photos",
+        path_to_png = graph.render(filename=name, directory = self.photos_dir,
                                    cleanup=True, format="png")
         
         graph_image = self.label_graph_image(photo_frame, path_to_png)
@@ -138,12 +140,12 @@ class Window(tk.Frame):
         label.pack()
         
         path_to_png = production.R.render(filename=name+"_right", format="png",
-                            directory = "graph_photos", cleanup=True)
+                            directory = self.photos_dir, cleanup=True)
         rigth_image = self.label_graph_image(photo_frame, path_to_png)
         rigth_image.pack(padx= 100, side="right")
         
         path_to_png = production.L.render(filename=name+"_left", format="png",
-                            directory = "graph_photos", cleanup=True)
+                            directory = self.photos_dir, cleanup=True)
         
         left_image = self.label_graph_image(photo_frame, path_to_png)
         left_image.pack(padx= 100, side = "left")
@@ -153,20 +155,21 @@ class Window(tk.Frame):
         Creating a Tkinter Label with Image
         frame - Frame  where we want have image
         path - path to the image
+        return - Label with Image, ready to pack or place
         """
         loaded_image = Image.open(path)
         rendered_image = ImageTk.PhotoImage(loaded_image)
-        label_with_image = tk.Label(frame, image = rendered_image, anchor="center")
+        label_with_image = tk.Label(frame, image = rendered_image)
         label_with_image.image = rendered_image
         return label_with_image
         
-    def next_button(self, listbox, graph_or_production):
+    def next_button(self, listbox, is_graph):
         """
-        Przełącza graf na następny
-        listbox - listbox w której mamy włączyć następny element
-        graph_or_production - True jesli listbox grafów, false jesli produkcji
+        Select next element in listbox
+        Listbox - listbox we want to select next element
+        is_graph - True if listbox contains graph names,
+                                    otherwise False
         """
-        
         if len(listbox.curselection()) == 0:
             return
         idx = int(listbox.curselection()[0])
@@ -177,18 +180,17 @@ class Window(tk.Frame):
             listbox.activate(idx+1)
             listbox.selection_set(idx+1)
             path = listbox.get(idx+1)
-            print("Scieżka:" + path)
-            self.selected_element_on_listbox(path, graph_or_production)
+            self.selected_element_on_listbox(path, is_graph)
         except:
             print("It is the last index")
 
-    def previous_button(self, listbox, graph_or_production):
+    def previous_button(self, listbox, is_graph):
         """
-        Przełącza graf na następny
-        listbox - listbox w której mamy włączyć następny element
-        graph_or_production - True jesli listbox grafów, false jesli produkcji
+        Select previous element in listbox
+        Listbox - listbox we want to select next element
+        is_graph - True if listbox contains graph names,
+                                    otherwise False
         """
-        
         if len(listbox.curselection()) == 0:
             return
         idx = int(listbox.curselection()[0])
@@ -199,27 +201,28 @@ class Window(tk.Frame):
             listbox.activate(idx-1)
             listbox.selection_set(idx-1)
             path = listbox.get(idx-1)
-            print("Scieżka:" + path)
-            self.selected_element_on_listbox(path, graph_or_production)
+            self.selected_element_on_listbox(path, is_graph)
         except:
             print("It is the first index")
 
-        
-    def selected_element_on_listbox(self, path, is_graph):
+    def selected_element_on_listbox(self, name, is_graph):
         """
-        Reaguje na nacisniecie listboxa
+        React when the listbox is select
+        name - name of element
+        is_graph - true is element is graph, otherwise False
         """
         if is_graph == True:
-            self.show_graph(path,self.photos_frame, self.stats_frame)
+            self.show_graph(name,self.photos_frame, self.stats_frame)
         else:
-            self.show_production(path, self.photos_frame, self.stats_frame)
+            self.show_production(name, self.photos_frame, self.stats_frame)
             
-    def pack_listbox(self, frame, elements, graphlistbox = True):
+    def pack_listbox(self, frame, elements, is_graph = True):
         """
-        Umieszcza listbox wraz ze scrollbarem zawierający wskazane elementy
-        frame - Frame gdzie ma zostać umieszczony listbox
-        elements - tablica zawierająca jakie elementy mają zawierać się w listboxie
-        
+        Packa listbox with a connected scrollbar with a selected Frame
+        frame - Frame we want put our listbox
+        elements - list contains elements we want put in listbox
+        is_graph - true is elements are graph names, otherwise False
+        return - packed listbox 
         """
         listbox_frame = tk.Frame(frame)
         listbox_frame.pack()
@@ -227,7 +230,7 @@ class Window(tk.Frame):
         listbox = tk.Listbox(listbox_frame, exportselection=False)
         listbox.bind('<<ListboxSelect>>', lambda e:
                      self.selected_element_on_listbox(
-                         listbox.get(listbox.curselection()), graphlistbox))
+                         listbox.get(listbox.curselection()), is_graph))
         for i, element in enumerate(elements):
             listbox.insert(i, element)
         listbox.pack(side="left", fill="both")
@@ -242,9 +245,9 @@ class Window(tk.Frame):
         
     def pack_graph_statistics(self, stats_frame, stats):
         """
-        Umieszcza statystyki dotyczące grafu w wskazanym Framie
-        stats_frame - Frame gdzie mają zostać umieszczone statystyki
-        stats - tablica z wartosciami poszczególnych statystyk
+        Set information about graph in selected Frame
+        stats_frame - Frame when we want put informations
+        stats - list contains information about graph
         """
         title_stats_label = tk.Label(stats_frame, text = "Stats:", bg= "green")
         title_stats_label.pack()
@@ -262,12 +265,12 @@ class Window(tk.Frame):
             
     def pack_embedding_transformation(self,stats_frame, T):
         """
-        Umieszcza szczegóły transformacji osadzenia w skazanym Framie
-        stats_frame - Frame gdzie mają zostać umieszczone statystyki
-        T - słownik zawierający transformacje osadzenia
+        Set information about embedding transformation in selected Frame
+        stats_frame - Frame when we want put informations
+        T - dictionary with embedding transformation
         """
-        title_trans_label = tk.Label(stats_frame,
-                                     text = "Embedding transformation:", bg = "green")
+        title_trans_label = tk.Label(stats_frame, bg = "green",
+                                     text = "Embedding transformation:")
         title_trans_label.pack()
         
         for key in T.keys():
@@ -280,9 +283,9 @@ class Window(tk.Frame):
             
     def find_paths(self, directory):
         """
-        Znajduje nazwy plikow w formacie .dot dla wskazanego folderu
-        directory - folder w którym szukami plików
-        return - lista scieżek plików w formacie dot
+        Finds .dot files from selected directory
+        directory - directory which we want to search
+        return - list of path of .dot files
         """
         files_list = os.listdir(directory)
         result_list = []
@@ -293,21 +296,20 @@ class Window(tk.Frame):
 
     def produce_button(self, graph_listbox, production_listbox):
         """
-        
+        Do produce on selected graph and production
+        graph_listbox - Listbox with selected graph
+        production_listbox - Listbox with selected production
         """
         try:
-            g_name = self.graph_paths[graph_listbox.curselection()[0]]
-            p_name = self.productions_paths[production_listbox.curselection()[0]]
+            g_name = graph_listbox.get(graph_listbox.curselection()[0])
+            p_name = production_listbox.get(production_listbox.curselection()[0])
         except: 
             print("Not selected graph and production")
             return
-        print("Nazwy:", g_name, p_name)
+        
         produce_Graph.produce(g_name,p_name)
         graph_listbox.insert(graph_listbox.size(), g_name+p_name)
         
-        self.graph_paths.append(g_name+p_name)
-        
-
 root = tk.Tk()
 app = Window(root)
 root.wm_title(" Transformacje i algorytmy grafowe")

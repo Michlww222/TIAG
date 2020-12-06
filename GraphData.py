@@ -33,8 +33,6 @@ class GraphData:
                 supportvar += 1
             supportlist.append([return1,return2])
         self.E = supportlist
-        print(self.V)
-        print(self.E)
         
     def number_of_nodes(self): #Done
         #długość listy wierzchołków
