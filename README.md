@@ -1,20 +1,39 @@
 # TIAG
 
-Korzystamy w pakietu graphviz, i jego podstawowej klasy Graph
+Main_instructions:
 
-W Graph wierzchołki wyglądają następująco:
- "\tname [label=label_name]"
- a krawędzie:
- "\t name -- name"
+Hello in the main graph production program!
 
-gdzie:
-- name - unikalna nazwa wierzchołka
-- label_name - co to wyświetla się na podglądzie grafu
+First enter the name of the new graph, for example
+"MyGraph"
 
-Zdefiniowana została klasa Graph_Trainsformation zawierająca roszrzeczenie klasy graphviz.Graph i z niej będziemy korzystać
-- Grafy są nieskierowane
-- Po lewej stronie produkcji zawsze jeden wierzchołek
-- Węzły nieterminalne mają label zapisany wielką literą
-- Węzły terminalne mają label zapisany małą literą
-- Krawędzie są bez attrybytów
-- Dla wygody nazwy są kolejnymi liczbami naturalnymi (zapisane niestety jako stringi)
+Then give the path to the input graph, for example
+"StartGraph.dot"
+
+At the end, give the production sequence to be performed on the graph.
+They must be the production names saved in / productions, for example
+"P1 P2 P3 P4"
+
+Enjoy the program!
+
+Graph_creator_instruction:
+
+Hello in the Graph Creator!
+
+To start creating a new graph, enter name of new graph, for example
+"MyNewGraph"
+
+To add a node to the graph, enter
+"node name label"
+where name is the name of the node and label is its label.
+
+To add a edge to the graph, enter
+"edge tail_name head_name"
+where tail_name and head_name are names od nodes that are joined by the edge.
+
+To finish creating your new graph, enter
+"end"
+
+You cannot create two graph at the same time
+To end the program, enter
+"exit"
