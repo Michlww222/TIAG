@@ -115,13 +115,13 @@ class Window(tk.Frame):
         graph_stats = readed_graph.get_data()
         self.pack_graph_statistics(stats_frame,graph_stats)
         
-        label = tk.Label(photo_frame, text=name, bg = "grey")
+        label = tk.Label(photo_frame, text=name, bg = "green")
         label.pack()
         path_to_png = graph.render(filename=name, directory = self.photos_dir,
                                    cleanup=True, format="png")
         
         graph_image = self.label_graph_image(photo_frame, path_to_png)
-        graph_image.pack(pady= 20, padx = 20)
+        graph_image.pack(pady = 20, padx = 20)
 
     def show_production(self, name, photo_frame, stats_frame):
         """
@@ -136,8 +136,8 @@ class Window(tk.Frame):
         production = readG.read_Production(name)
         self.pack_embedding_transformation(stats_frame, production.T)
         
-        label = tk.Label(photo_frame, text=name,  pady = 50, bg = "grey")
-        label.pack()
+        label = tk.Label(photo_frame, text=name, pady = 5, bg = "green")
+        label.pack(pady= 50)
         
         path_to_png = production.R.render(filename=name+"_right", format="png",
                             directory = self.photos_dir, cleanup=True)
@@ -148,7 +148,7 @@ class Window(tk.Frame):
                             directory = self.photos_dir, cleanup=True)
         
         left_image = self.label_graph_image(photo_frame, path_to_png)
-        left_image.pack(padx= 100, side = "left")
+        left_image.pack(padx = 100, side = "left")
         
     def label_graph_image(self, frame, path):
         """
