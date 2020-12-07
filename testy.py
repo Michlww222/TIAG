@@ -194,7 +194,7 @@ class GraphTest(unittest.TestCase):
         self.assertEquals(new_names[1],'2')
         self.assertEquals(new_names[2],'3')
         self.assertEquals(new_names[3],'4')
-        self.assertEquals(new_names[4],'6')
+        self.assertEqual(new_names[4],'6')
         
         new_names = find_unique_names([],2)
         self.assertEquals(new_names[0],'0')
@@ -492,373 +492,373 @@ class ProductionTest(unittest.TestCase):
     def test_Production1(self):
         #nodes_number
         nodes_number = self.dataP1G1.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
         
         nodes_number = self.dataP1G2.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
 
         nodes_number = self.dataP1G3.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
 
         nodes_number = self.dataP1G4.number_of_nodes()
-        self.assertEqual(nodes_number,6)
+        self.assertEquals(nodes_number,6)
         
         nodes_number = self.dataP1G6.number_of_nodes()
-        self.assertEqual(nodes_number,6)
+        self.assertEquals(nodes_number,6)
         #edges_number
         edges_number = self.dataP1G1.number_of_edges()
-        self.assertEqual(edges_number,4)
+        self.assertEquals(edges_number,4)
         
         edges_number = self.dataP1G2.number_of_edges()
-        self.assertEqual(edges_number,3)
+        self.assertEquals(edges_number,3)
 
         edges_number = self.dataP1G3.number_of_edges()
-        self.assertEqual(edges_number,2)
+        self.assertEquals(edges_number,2)
 
         edges_number = self.dataP1G4.number_of_edges()
-        self.assertEqual(edges_number,4)
+        self.assertEquals(edges_number,4)
         
         edges_number = self.dataP1G6.number_of_edges()
-        self.assertEqual(edges_number,8)
+        self.assertEquals(edges_number,8)
         #components_number  
         components_number = self.dataP1G1.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         components_number = self.dataP1G2.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
 
         components_number = self.dataP1G3.number_of_components()
-        self.assertEqual(components_number,3)
+        self.assertEquals(components_number,3)
 
         components_number = self.dataP1G4.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
        
         components_number = self.dataP1G6.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         #nodes_degree_average
         nodes_degree_average = self.dataP1G1.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.6)
+        self.assertEquals(nodes_degree_average,1.6)
         
         nodes_degree_average = self.dataP1G2.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.2)
+        self.assertEquals(nodes_degree_average,1.2)
 
         nodes_degree_average = self.dataP1G3.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,0.8)
+        self.assertEquals(nodes_degree_average,0.8)
 
         nodes_degree_average = self.dataP1G4.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.33)
+        self.assertEquals(nodes_degree_average,1.33)
 
         nodes_degree_average = self.dataP1G6.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,2.67)
+        self.assertEquals(nodes_degree_average,2.67)
         #ABCD_nodes_degree_average
         ABCD_nodes_degree_average = self.dataP1G1.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP1G2.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0.67)
+        self.assertEquals(ABCD_nodes_degree_average,0.67)
 
         ABCD_nodes_degree_average = self.dataP1G3.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0.67)
+        self.assertEquals(ABCD_nodes_degree_average,0.67)
 
         ABCD_nodes_degree_average = self.dataP1G4.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP1G6.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,2)
+        self.assertEquals(ABCD_nodes_degree_average,2)
         #nodes_in_components_average       
         nodes_in_components_average = self.dataP1G1.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,5)
+        self.assertEquals(nodes_in_components_average,5)
 
         nodes_in_components_average = self.dataP1G2.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,2.5)
+        self.assertEquals(nodes_in_components_average,2.5)
 
         nodes_in_components_average = self.dataP1G3.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,1.67)
+        self.assertEquals(nodes_in_components_average,1.67)
 
         nodes_in_components_average = self.dataP1G4.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,3)
+        self.assertEquals(nodes_in_components_average,3)
         
         nodes_in_components_average = self.dataP1G6.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,6)
+        self.assertEquals(nodes_in_components_average,6)
 
 
     def test_Production2(self):
 
         nodes_number = self.dataP2G1.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
         
         nodes_number = self.dataP2G2.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
 
         nodes_number = self.dataP2G3.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
 
         nodes_number = self.dataP2G4.number_of_nodes()
-        self.assertEqual(nodes_number,6)
+        self.assertEquals(nodes_number,6)
         
         nodes_number = self.dataP2G6.number_of_nodes()
-        self.assertEqual(nodes_number,6)
+        self.assertEquals(nodes_number,6)
 
         edges_number = self.dataP2G1.number_of_edges()
-        self.assertEqual(edges_number,4)
+        self.assertEquals(edges_number,4)
         
         edges_number = self.dataP2G2.number_of_edges()
-        self.assertEqual(edges_number,3)
+        self.assertEquals(edges_number,3)
 
         edges_number = self.dataP2G3.number_of_edges()
-        self.assertEqual(edges_number,2)
+        self.assertEquals(edges_number,2)
 
         edges_number = self.dataP2G4.number_of_edges()
-        self.assertEqual(edges_number,4)
+        self.assertEquals(edges_number,4)
         
         edges_number = self.dataP2G6.number_of_edges()
-        self.assertEqual(edges_number,6)
+        self.assertEquals(edges_number,8)
            
         components_number = self.dataP2G1.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         components_number = self.dataP2G2.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
 
         components_number = self.dataP2G3.number_of_components()
-        self.assertEqual(components_number,3)
+        self.assertEquals(components_number,3)
 
         components_number = self.dataP2G4.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
        
         components_number = self.dataP2G6.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         nodes_degree_average = self.dataP2G1.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.6)
+        self.assertEquals(nodes_degree_average,1.6)
         
         nodes_degree_average = self.dataP2G2.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.2)
+        self.assertEquals(nodes_degree_average,1.2)
 
         nodes_degree_average = self.dataP2G3.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,0.6)
+        self.assertEquals(nodes_degree_average,0.6)
 
         nodes_degree_average = self.dataP2G4.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.33)
+        self.assertEquals(nodes_degree_average,1.33)
         
         nodes_degree_average = self.dataP2G6.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,2.67)
+        self.assertEquals(nodes_degree_average,2.67)
         
         ABCD_nodes_degree_average = self.dataP2G1.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP2G2.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0.67)
+        self.assertEquals(ABCD_nodes_degree_average,0.67)
 
         ABCD_nodes_degree_average = self.dataP2G3.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0.67)
+        self.assertEquals(ABCD_nodes_degree_average,0.67)
 
         ABCD_nodes_degree_average = self.dataP2G4.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1.25)
+        self.assertEquals(ABCD_nodes_degree_average,1.25)
         
         ABCD_nodes_degree_average = self.dataP2G6.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,3)
+        self.assertEquals(ABCD_nodes_degree_average,3)
                
         nodes_in_components_average = self.dataP2G1.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,5)
+        self.assertEquals(nodes_in_components_average,5)
 
         nodes_in_components_average = self.dataP2G2.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,2.5)
+        self.assertEquals(nodes_in_components_average,2.5)
 
         nodes_in_components_average = self.dataP2G3.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,1.67)
+        self.assertEquals(nodes_in_components_average,1.67)
 
         nodes_in_components_average = self.dataP2G4.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,3)
+        self.assertEquals(nodes_in_components_average,3)
         
         nodes_in_components_average = self.dataP2G6.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,6)
+        self.assertEquals(nodes_in_components_average,6)
 
 
     def test_Production3(self):
 
         nodes_number = self.dataP3G1.number_of_nodes()
-        self.assertEqual(nodes_number,4)
+        self.assertEquals(nodes_number,4)
         
         nodes_number = self.dataP3G2.number_of_nodes()
-        self.assertEqual(nodes_number,4)
+        self.assertEquals(nodes_number,4)
 
         nodes_number = self.dataP3G3.number_of_nodes()
-        self.assertEqual(nodes_number,4)
+        self.assertEquals(nodes_number,4)
 
         nodes_number = self.dataP3G4.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
         
         nodes_number = self.dataP3G6.number_of_nodes()
-        self.assertEqual(nodes_number,5)
+        self.assertEquals(nodes_number,5)
 
         edges_number = self.dataP3G1.number_of_edges()
-        self.assertEqual(edges_number,3)
+        self.assertEquals(edges_number,3)
         
         edges_number = self.dataP3G2.number_of_edges()
-        self.assertEqual(edges_number,2)
+        self.assertEquals(edges_number,2)
 
         edges_number = self.dataP3G3.number_of_edges()
-        self.assertEqual(edges_number,1)
+        self.assertEquals(edges_number,1)
 
         edges_number = self.dataP3G4.number_of_edges()
-        self.assertEqual(edges_number,3)
+        self.assertEquals(edges_number,3)
         
         edges_number = self.dataP3G6.number_of_edges()
-        self.assertEqual(edges_number,7)
+        self.assertEquals(edges_number,7)
            
         components_number = self.dataP3G1.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         components_number = self.dataP3G2.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
 
         components_number = self.dataP3G3.number_of_components()
-        self.assertEqual(components_number,3)
+        self.assertEquals(components_number,3)
 
         components_number = self.dataP3G4.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
        
         components_number = self.dataP3G6.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         nodes_degree_average = self.dataP3G1.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.5)
+        self.assertEquals(nodes_degree_average,1.5)
         
         nodes_degree_average = self.dataP3G2.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1)
+        self.assertEquals(nodes_degree_average,1)
 
         nodes_degree_average = self.dataP3G3.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,0.5)
+        self.assertEquals(nodes_degree_average,0.5)
 
         nodes_degree_average = self.dataP3G4.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.2)
+        self.assertEquals(nodes_degree_average,1.2)
         
         nodes_degree_average = self.dataP3G6.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,2.8)
+        self.assertEquals(nodes_degree_average,2.8)
         
         ABCD_nodes_degree_average = self.dataP3G1.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP3G2.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0)
+        self.assertEquals(ABCD_nodes_degree_average,0)
 
         ABCD_nodes_degree_average = self.dataP3G3.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0)
+        self.assertEquals(ABCD_nodes_degree_average,0)
 
         ABCD_nodes_degree_average = self.dataP3G4.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP3G6.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,3)
+        self.assertEquals(ABCD_nodes_degree_average,3)
                
         nodes_in_components_average = self.dataP3G1.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,4)
+        self.assertEquals(nodes_in_components_average,4)
 
         nodes_in_components_average = self.dataP3G2.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,2)
+        self.assertEquals(nodes_in_components_average,2)
 
         nodes_in_components_average = self.dataP3G3.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,1.33)
+        self.assertEquals(nodes_in_components_average,1.33)
 
         nodes_in_components_average = self.dataP3G4.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,2.5)
+        self.assertEquals(nodes_in_components_average,2.5)
         
         nodes_in_components_average = self.dataP3G6.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,5)
+        self.assertEquals(nodes_in_components_average,5)
 
 
     def test_Production4(self):
 
         nodes_number = self.dataP4G1.number_of_nodes()
-        self.assertEqual(nodes_number,3)
+        self.assertEquals(nodes_number,3)
         
         nodes_number = self.dataP4G2.number_of_nodes()
-        self.assertEqual(nodes_number,3)
+        self.assertEquals(nodes_number,3)
 
         nodes_number = self.dataP4G3.number_of_nodes()
-        self.assertEqual(nodes_number,3)
+        self.assertEquals(nodes_number,3)
 
         nodes_number = self.dataP4G4.number_of_nodes()
-        self.assertEqual(nodes_number,4)
+        self.assertEquals(nodes_number,4)
         
         nodes_number = self.dataP4G6.number_of_nodes()
-        self.assertEqual(nodes_number,4)
+        self.assertEquals(nodes_number,4)
 
         edges_number = self.dataP4G1.number_of_edges()
-        self.assertEqual(edges_number,2)
+        self.assertEquals(edges_number,2)
         
         edges_number = self.dataP4G2.number_of_edges()
-        self.assertEqual(edges_number,1)
+        self.assertEquals(edges_number,1)
 
         edges_number = self.dataP4G3.number_of_edges()
-        self.assertEqual(edges_number,0)
+        self.assertEquals(edges_number,0)
 
         edges_number = self.dataP4G4.number_of_edges()
-        self.assertEqual(edges_number,2)
+        self.assertEquals(edges_number,2)
         
         edges_number = self.dataP4G6.number_of_edges()
-        self.assertEqual(edges_number,6)
+        self.assertEquals(edges_number,6)
            
         components_number = self.dataP4G1.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         components_number = self.dataP4G2.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
 
         components_number = self.dataP4G3.number_of_components()
-        self.assertEqual(components_number,3)
+        self.assertEquals(components_number,3)
 
         components_number = self.dataP4G4.number_of_components()
-        self.assertEqual(components_number,2)
+        self.assertEquals(components_number,2)
        
         components_number = self.dataP4G6.number_of_components()
-        self.assertEqual(components_number,1)
+        self.assertEquals(components_number,1)
         
         nodes_degree_average = self.dataP4G1.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1.33)
+        self.assertEquals(nodes_degree_average,1.33)
         
         nodes_degree_average = self.dataP4G2.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,0.67)
+        self.assertEquals(nodes_degree_average,0.67)
 
         nodes_degree_average = self.dataP4G3.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,0)
+        self.assertEquals(nodes_degree_average,0)
 
         nodes_degree_average = self.dataP4G4.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,1)
+        self.assertEquals(nodes_degree_average,1)
         
         nodes_degree_average = self.dataP4G6.average_of_nodes_degree()
-        self.assertEqual(nodes_degree_average,3)
+        self.assertEquals(nodes_degree_average,3)
         
         ABCD_nodes_degree_average = self.dataP4G1.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1.5)
+        self.assertEquals(ABCD_nodes_degree_average,1.5)
         
         ABCD_nodes_degree_average = self.dataP4G2.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0.5)
+        self.assertEquals(ABCD_nodes_degree_average,0.5)
 
         ABCD_nodes_degree_average = self.dataP4G3.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,0)
+        self.assertEquals(ABCD_nodes_degree_average,0)
 
         ABCD_nodes_degree_average = self.dataP4G4.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,1)
+        self.assertEquals(ABCD_nodes_degree_average,1)
         
         ABCD_nodes_degree_average = self.dataP4G6.average_ABCD_nodes_degree()
-        self.assertEqual(ABCD_nodes_degree_average,3)
+        self.assertEquals(ABCD_nodes_degree_average,3)
                
         nodes_in_components_average = self.dataP4G1.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,3)
+        self.assertEquals(nodes_in_components_average,3)
 
         nodes_in_components_average = self.dataP4G2.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,1.5)
+        self.assertEquals(nodes_in_components_average,1.5)
 
         nodes_in_components_average = self.dataP4G3.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,1)
+        self.assertEquals(nodes_in_components_average,1)
 
         nodes_in_components_average = self.dataP4G4.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,2)
+        self.assertEquals(nodes_in_components_average,2)
         
         nodes_in_components_average = self.dataP4G6.average_of_nodes_in_components()
-        self.assertEqual(nodes_in_components_average,4)
+        self.assertEquals(nodes_in_components_average,4)
     
 
 
