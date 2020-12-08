@@ -1,0 +1,11 @@
+graph Alpha {
+	1 [label=X]
+	2 [label=a]
+	3 [label=b]
+	4 [label=c]
+	5 [label=d]
+	1 -- 2
+	1 -- 3
+	1 -- 4
+	1 -- 5
+}

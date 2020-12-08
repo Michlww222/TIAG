@@ -1,0 +1,20 @@
+# name: P5
+# --- #
+graph P5Left {
+	1 [label=X]
+}
+# --- #
+graph P5Right {
+	1 [label=Y]
+	2 [label=c]
+	3 [label=a]
+	1 -- 2
+	1 -- 3
+}
+# --- #
+# embed_transformation a Y 
+# embed_transformation b c 
+# embed_transformation c Y 
+# embed_transformation d a 
+# embed_transformation X None 
+# embed_transformation Y None 

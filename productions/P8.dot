@@ -1,0 +1,16 @@
+# name: P8
+# --- #
+graph P8Left {
+	1 [label=Y]
+}
+# --- #
+graph P8Right {
+	1 [label=c]
+}
+# --- #
+# embed_transformation a Y 
+# embed_transformation b c 
+# embed_transformation c Y 
+# embed_transformation d a 
+# embed_transformation X None 
+# embed_transformation Y None 

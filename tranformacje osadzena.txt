@@ -1,0 +1,107 @@
+#1
+
+# embed_transformation A A
+# embed_transformation B None
+# embed_transformation C None
+# embed_transformation a A
+# embed_transformation b None
+# embed_transformation c None
+
+#2
+
+# embed_transformation A None
+# embed_transformation B B
+# embed_transformation C C
+# embed_transformation a None
+# embed_transformation b B
+# embed_transformation c C
+
+#3
+
+# embed_transformation A A
+# embed_transformation B B
+# embed_transformation C C
+# embed_transformation a A
+# embed_transformation b B
+# embed_transformation c C
+
+#4
+
+# embed_transformation A None
+# embed_transformation B a
+# embed_transformation C a
+# embed_transformation a None
+# embed_transformation b a
+# embed_transformation c a
+
+#5
+
+# embed_transformation A b
+# embed_transformation B None
+# embed_transformation C b
+# embed_transformation a b
+# embed_transformation b None
+# embed_transformation c b
+
+#6
+
+# embed_transformation A c
+# embed_transformation B c
+# embed_transformation C None
+# embed_transformation a c
+# embed_transformation b c
+# embed_transformation c None
+
+#7
+
+# embed_transformation A B
+# embed_transformation B A
+# embed_transformation C None
+# embed_transformation a B
+# embed_transformation b A
+# embed_transformation c None
+
+#8
+
+# embed_transformation A C
+# embed_transformation B None
+# embed_transformation C A
+# embed_transformation a C
+# embed_transformation b None
+# embed_transformation c A
+
+#9
+
+# embed_transformation A B
+# embed_transformation B A
+# embed_transformation C None
+# embed_transformation a B
+# embed_transformation b A
+# embed_transformation c None
+
+#10
+
+# embed_transformation A None
+# embed_transformation B C
+# embed_transformation C B
+# embed_transformation a None
+# embed_transformation b C
+# embed_transformation c B
+
+#11
+
+# embed_transformation A C
+# embed_transformation B None
+# embed_transformation C A
+# embed_transformation a C
+# embed_transformation b None
+# embed_transformation c A
+
+#12
+
+# embed_transformation A None
+# embed_transformation B C
+# embed_transformation C B
+# embed_transformation a None
+# embed_transformation b C
+# embed_transformation c B

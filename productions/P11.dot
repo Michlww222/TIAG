@@ -1,0 +1,18 @@
+# name: P11
+# --- #
+graph P11Left {
+	1 [label=Y]
+}
+# --- #
+graph P11Right {
+	1 [label=Y]
+	2 [label=X]
+	1 -- 2
+}
+# --- #
+# embed_transformation a b 
+# embed_transformation b X 
+# embed_transformation c d 
+# embed_transformation d X 
+# embed_transformation X None 
+# embed_transformation Y None 

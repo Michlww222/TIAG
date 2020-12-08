@@ -1,0 +1,18 @@
+# name: HS_7
+# --- #
+graph HS_7 {
+	1 [label=A]
+}
+# --- #
+graph HS_7 {
+	1 [label=B]
+	2 [label=A]
+	1 -- 2
+}
+# --- #
+# embed_transformation A B
+# embed_transformation B A
+# embed_transformation C None
+# embed_transformation a B
+# embed_transformation b A
+# embed_transformation c None

@@ -1,0 +1,18 @@
+# name: P7
+# --- #
+graph P7Left {
+	1 [label=Y]
+}
+# --- #
+graph P7Right {
+	1 [label=Y]
+	2 [label=X]
+	1 -- 2
+}
+# --- #
+# embed_transformation a Y 
+# embed_transformation b c 
+# embed_transformation c Y 
+# embed_transformation d a 
+# embed_transformation X None 
+# embed_transformation Y None 

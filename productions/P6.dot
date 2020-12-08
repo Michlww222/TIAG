@@ -1,0 +1,20 @@
+# name: P6
+# --- #
+graph P6Left {
+	1 [label=X]
+}
+# --- #
+graph P6Right {
+	1 [label=X]
+	2 [label=b]
+	3 [label=d]
+	1 -- 2
+	1 -- 3
+}
+# --- #
+# embed_transformation a Y 
+# embed_transformation b c 
+# embed_transformation c Y 
+# embed_transformation d a 
+# embed_transformation X None 
+# embed_transformation Y None 

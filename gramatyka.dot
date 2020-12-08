@@ -1,0 +1,160 @@
+// GRAF STARTOWY 
+//---------------
+graph G_0 {
+1 -- 2;
+2 -- 3;
+3 -- 1;
+1 [label=A];
+2 [label=B];
+3 [label=C];
+}
+
+
+
+// PRODUKCJA 1
+// ------------
+
+graph LHS_1 {
+1 [label=A];
+}
+
+graph RHS_1 {
+1 -- 2;
+2 -- 3;
+3 -- 1;
+1 [label=A];
+2 [label=A];
+3 [label=A];
+}
+
+// PRODUKCJA 2
+// ------------
+graph LHS_2 {
+1 [label=A];
+}
+
+graph RHS_2 {
+1 -- 2;
+2 -- 3;
+3 -- 1;
+1 [label=C];
+2 [label=B];
+3 [label=B];
+}
+
+// PRODUKCJA 3
+//------------
+graph LHS_3 {
+1 [label=A];
+}
+
+graph RHS_3 {
+1 -- 2;
+2 -- 3;
+3 -- 1;
+1 [label=A];
+2 [label=B];
+3 [label=C];
+}
+
+// PRODUKCJA 4
+//------------
+graph LHS_4 {
+1 [label=A];
+}
+
+graph RHS_4 {
+1 [label=a];
+}
+
+// PRODUKCJA 5
+//------------
+graph LHS_5 {
+1 [label=B];
+}
+
+graph RHS_5 {
+1 [label=b];
+}
+
+// PRODUKCJA 6
+// ------------
+graph LHS_6 {
+1 [label=C];
+}
+
+graph RHS_6 {
+1 [label=c];
+}
+
+// PRODUKCJA 7
+//------------
+graph LHS_7 {
+1 [label=A];
+}
+
+graph RHS_7 {
+1 -- 2;
+1 [label=B];
+2 [label=A];
+}
+
+// PRODUKCJA 8
+//------------
+graph LHS_8 {
+1 [label=A];
+}
+
+graph RHS_8 {
+1 -- 2;
+1 [label=C];
+2 [label=A];
+}
+
+// PRODUKCJA 9
+//------------
+graph LHS_9 {
+1 [label=B];
+}
+
+graph RHS_9 {
+1 -- 2;
+1 [label=A];
+2 [label=B];
+}
+
+// PRODUKCJA 10
+//------------
+graph LHS_10 {
+1 [label=B];
+}
+
+graph RHS_10 {
+1 -- 2;
+1 [label=C];
+2 [label=B];
+}
+
+// PRODUKCJA 11
+//------------
+graph LHS_11 {
+1 [label=C];
+}
+
+graph RHS_11 {
+1 -- 2;
+1 [label=A];
+2 [label=C];
+}
+
+// PRODUKCJA 12
+//------------
+graph LHS_12 {
+1 [label=C];
+}
+
+graph RHS_12 {
+1 -- 2;
+1 [label=B];
+2 [label=C];
+}

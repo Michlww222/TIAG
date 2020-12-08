@@ -1,0 +1,16 @@
+# name: HS_4
+# --- #
+graph HS_4 {
+	1 [label=A]
+}
+# --- #
+graph HS_4 {
+	1 [label=a]
+}
+# --- #
+# embed_transformation A None
+# embed_transformation B a
+# embed_transformation C a
+# embed_transformation a None
+# embed_transformation b a
+# embed_transformation c a
