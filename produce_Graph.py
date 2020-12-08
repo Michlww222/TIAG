@@ -26,13 +26,16 @@ def find_filename(name):
 
 
 def produce(graph_name, production_name):
-    graph_filename = find_filename(graph_name)
-    graph = read_Graph(graph_filename, graph_name)
+    graph_directory = find_filename(graph_name)
+    graph = read_Graph(graph_directory, graph_name)
     production = read_Production(production_name)
     result_graph = production.produce(graph, graph_name+production_name)
+    result_graph.render(filename=result_graph.name, directory="graph_photos",
+                        format='png', cleanup = True)
     result_graph.render(filename=result_graph.name, directory="results", format='png')
     result_graph.render(filename=result_graph.name + ".dot", directory="results")
     os.replace("results/" + result_graph.name + ".png", "graph_photos/" + result_graph.name + ".png")
     os.remove("results/" + result_graph.name)
     os.remove("results/" + result_graph.name + ".dot.pdf")
+    return result_graph
 # end def

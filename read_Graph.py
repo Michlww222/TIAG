@@ -60,7 +60,10 @@ def read_embed_transformation(filename):
     file.close()
     for i, str in enumerate(command):
         if str == "embed_transformation":
-            embed_t[command[i+1]] = command[i+2]
+            if command[i+2] == "None":
+                embed_t[command[i + 1]] = None
+            else:
+                embed_t[command[i+1]] = command[i+2]
     return embed_t
 # end def
 

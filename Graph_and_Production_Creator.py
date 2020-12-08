@@ -4,9 +4,10 @@ Created on Nov 27  2020
 
 @author: Piotr Biały
 """
-
-
+import pydot
 from graphviz import Graph
+from read_Graph import graph_to_graph_transformation, pydot_graph_to_graph
+import os
 
 
 class Graph_Creaotr():
@@ -49,11 +50,13 @@ class Graph_Creaotr():
                 print("You enter too much arguments")
             command = input().split()
 
-    def finish_creating(self, filename, also_png):
+    def finish_creating(self, filename, graph_or_production):
         print("Your graph will be in file '" + filename + "'")
-        if (also_png):
-            self.graph.render(filename="grafy_startowe\dot\\" + self.graph.name)
-            self.graph.render(filename="grafy_startowe\png\\" + self.graph.name, format='png')
+        if (graph_or_production):
+            self.graph.render(filename="grafy_startowe\\" + self.graph.name + ".dot")
+            self.graph.render(filename="graph_photos\\" + self.graph.name, format='png')
+            os.remove("graph_photos/" + self.graph.name)
+            os.remove("grafy_startowe/" + self.graph.name + ".dot.pdf")
         else:
             file = open(self.filename, "a")
             with file:
@@ -79,6 +82,7 @@ class Production_Creator():
         Graph_Creaotr(filename=self.filename, name=self.name + "Right", start_graph=False)
         self.add_to_file("# --- #")
         self.create_embed_transformation()
+        self.finish_creating()
 
     def create_name(self):
         print("Enter the name of your new production")
@@ -103,6 +107,16 @@ class Production_Creator():
                     print("You enter too much arguments")
                 command = input().split()
         file.close()
+
+    def finish_creating(self):
+        left_p = pydot.graph_from_dot_file(self.filename)[0]
+        right_p = pydot.graph_from_dot_file(self.filename)[1]
+        l = graph_to_graph_transformation(pydot_graph_to_graph(left_p, self.name))
+        r = graph_to_graph_transformation(pydot_graph_to_graph(right_p, self.name))
+        l.render(filename="graph_photos\\" + l.name + "_left", format='png')
+        r.render(filename="graph_photos\\" + r.name + "_right", format='png')
+        os.remove("graph_photos/" + l.name + "_left")
+        os.remove("graph_photos/" + r.name + "_right")
 # end def
 
 

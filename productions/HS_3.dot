@@ -1,0 +1,21 @@
+# name: HS_3
+# --- #
+graph HS_3 {
+	1 [label=A]
+}
+# --- #
+graph HS_3 {
+	1 [label=A]
+	2 [label=B]
+	3 [label=C]
+	1 -- 2
+	2 -- 3
+	3 -- 1
+}
+# --- #
+# embed_transformation A A
+# embed_transformation B B
+# embed_transformation C C
+# embed_transformation a A
+# embed_transformation b B
+# embed_transformation c C

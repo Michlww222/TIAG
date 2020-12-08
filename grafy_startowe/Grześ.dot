@@ -1,0 +1,8 @@
+graph "Grześ" {
+	1 [label=X]
+	2 [label=Y]
+	3 [label=a]
+	1 -- 2
+	2 -- 3
+	3 -- 1
+}

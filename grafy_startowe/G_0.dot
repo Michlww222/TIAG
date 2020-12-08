@@ -1,0 +1,8 @@
+graph G_0 {
+	1 [label=A]
+	2 [label=B]
+	3 [label=C]
+	1 -- 2
+	2 -- 3
+	3 -- 1
+}

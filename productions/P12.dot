@@ -1,0 +1,16 @@
+# name: P12
+# --- #
+graph P12Left {
+	1 [label=Y]
+}
+# --- #
+graph P12Right {
+	1 [label=c]
+}
+# --- #
+# embed_transformation a b 
+# embed_transformation b X 
+# embed_transformation c d 
+# embed_transformation d X 
+# embed_transformation X None 
+# embed_transformation Y None 
